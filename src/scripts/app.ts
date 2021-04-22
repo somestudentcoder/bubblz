@@ -1,3 +1,15 @@
 // app.ts
+import { Model } from './model';
+import { View } from './view';
+import { Controller } from './controller';
 
-window.alert("This needs some work.")
+declare global {
+   var model: Model;
+   var view: View;
+   var controller: Controller;
+}
+
+window.model = new Model();
+window.view = new View();
+window.controller = new Controller();
+
