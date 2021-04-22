@@ -22,6 +22,7 @@ export class Model{
 
     }
 
+    
     hasUniqueParents(columns: string[]) {
         let requiredColumns = ['name', 'parent'];
         return requiredColumns.every(function (column: any = {}) {
