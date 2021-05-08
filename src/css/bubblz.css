@@ -1,0 +1,17 @@
+h1
+{
+    font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+    font-size: 65px;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+canvas {
+    border-style: solid;
+    border-color: #202020;
+    display: block;
+    border-radius: 5px;
+    max-width: 83%;
+    max-height: 83vh;
+    resize: both;
+  }
