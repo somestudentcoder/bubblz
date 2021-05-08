@@ -68,7 +68,7 @@ export class View{
         this.world.addBody(this.circleBody);
         this.world.addBody(groundBody);
 
-        setInterval(this.animate, this.timeStep, this);
+        setInterval(this.animate, 100 * this.timeStep, this);
     }
 
     animate(view: View){
@@ -77,11 +77,6 @@ export class View{
         view.circle.beginFill(0x000000);
         view.circle.drawCircle(view.circleBody.position[0], view.circleBody.position[1], 30);
         view.circle.endFill();
-        
-        console.log("Circle x position: " + view.circleBody.position[0]);
-        console.log("Circle y position: " + view.circleBody.position[1]);
-        console.log("Circle angle: " + view.circleBody.angle);
-        
     }
 
 }
