@@ -41,7 +41,9 @@ export class View{
         });
         
 
-        
+        document.getElementById("load-file-button")!.onclick = (e) => {
+            this.loadFileButton()
+        }
 
 
         //test
@@ -78,10 +80,32 @@ export class View{
         view.circle.drawCircle(view.circleBody.position[0], view.circleBody.position[1], 30);
         view.circle.endFill();
         
-        console.log("Circle x position: " + view.circleBody.position[0]);
+        /*console.log("Circle x position: " + view.circleBody.position[0]);
         console.log("Circle y position: " + view.circleBody.position[1]);
-        console.log("Circle angle: " + view.circleBody.angle);
+        console.log("Circle angle: " + view.circleBody.angle);*/
         
+    }
+
+    loadFileButton()
+    {
+        let input = document.createElement('input');
+        input.type = 'file';
+        input.onchange = _ => {
+            // you can use this method to get file and perform respective operations
+            let files = Array.from(input.files!);
+            let file = files[0];
+            if(file.type == "text/csv") {
+                var reader = new FileReader();
+                reader.readAsText(file, "UTF-8");
+                reader.onload = function (evt) {
+                    console.log(model.parseCsv(evt.target!.result))
+                }
+                reader.onerror = function (evt) {
+                    console.log("Error reading the file")
+                }
+            }
+        };
+        input.click();
     }
 
 }

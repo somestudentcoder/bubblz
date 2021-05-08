@@ -6,6 +6,9 @@ h1
     margin-bottom: 0;
 }
 
+header{
+    position: relative
+}
 canvas {
     border-style: solid;
     border-color: #202020;
@@ -15,3 +18,18 @@ canvas {
     max-height: 83vh;
     resize: both;
   }
+.button1{
+    position: absolute;
+    text-align: center;
+    left : 250px;
+    top: 20px;
+    border: none;
+    color: white;
+    background-color: black;
+    padding: 15px 32px;
+    font-size: 16px;
+    font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+    cursor: pointer;
+    margin-top: 0;
+    margin-bottom: 0;
+}
