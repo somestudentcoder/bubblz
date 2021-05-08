@@ -1,6 +1,8 @@
 import * as PIXI from 'pixi.js';
 import { Viewport } from 'pixi-viewport';
 import * as p2 from 'p2';
+import { ENGINE_METHOD_PKEY_ASN1_METHS } from 'node:constants';
+import { pipeline } from 'node:stream';
 
 export class View{
     public app: PIXI.Application;
@@ -10,12 +12,16 @@ export class View{
 
     public viewport: Viewport;
 
+    public graphics: PIXI.Graphics;
+
 
     //test
+    /*
     public timeStep: number;
     public world: p2.World;
     public circleBody: p2.Body;
     public circle: PIXI.Graphics;
+    */
 
     constructor(){
         //init pixi
@@ -41,8 +47,8 @@ export class View{
         });
         
 
-        
-        this.drawCircles();
+        this.graphics = new PIXI.Graphics
+        //this.drawCircles();
 
         //test
         /*
@@ -72,23 +78,30 @@ export class View{
         setInterval(this.animate, this.timeStep, this);
         */
     }
-
+/*
     animate(view: View){
         view.world.step(view.timeStep);
         view.circle.clear();
         view.circle.beginFill(0x000000);
         view.circle.drawCircle(view.circleBody.position[0], view.circleBody.position[1], 30);
         view.circle.endFill();
-        
-        console.log("Circle x position: " + view.circleBody.position[0]);
-        console.log("Circle y position: " + view.circleBody.position[1]);
-        console.log("Circle angle: " + view.circleBody.angle);
-        
+    }
+*/
+    startBubblz()
+    {
+        this.drawCircles()
     }
 
     drawCircles()
     {
-
+        this.app.stage.addChild(this.graphics)
+        this.graphics.clear();
+        for (let index = 0; index < model.root_bubble.children.length; index++) {
+            this.graphics.beginFill(0xFFFFFF);
+            this.graphics.lineStyle({width: 2})
+            this.graphics.drawCircle((index * 50) + 30, 40, 15)
+            this.graphics.endFill()
+        }
     }
 
 }

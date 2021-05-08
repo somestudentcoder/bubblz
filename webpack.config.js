@@ -30,7 +30,8 @@ const config = {
         new HtmlWebpackPlugin({
             hash: true,
             template: "./src/bubblz.html",
-            inject: false,
+            favicon:  "./src/favicon.ico",
+            //inject: false,
             filename: "index.html"
         }),
         new CleanWebpackPlugin(),
@@ -39,6 +40,7 @@ const config = {
                 patterns:
                 [
                     //{ from: 'src/bubblz.html' },
+                    { from: 'src/favicon.ico', to: 'favicon.ico'},
                     { from: 'src/css/bubblz.css', to: 'css/' },
                     { from: 'data/world_gdp.json', to: 'data/'},
                     { from: 'data/cars.csv', to: 'data/'},
@@ -48,8 +50,8 @@ const config = {
         )
     ],
     devServer: {
-        contentBase: './dist',
-        //contentBase: path.join(__dirname, 'dist'),
+        //contentBase: './dist',
+        contentBase: path.join(__dirname, 'dist'),
         compress: true,
         port: 8080,
         hot: true

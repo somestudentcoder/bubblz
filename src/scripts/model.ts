@@ -2,13 +2,14 @@ import {csvParse} from "d3-dsv";
 import {csv, json} from "d3-fetch";
 import {hierarchy, HierarchyNode, stratify} from "d3-hierarchy";
 import { readFileSync } from "fs";
+import { Bubble } from "./Bubble";
 
 
 
 
 export class Model{
-    public currentPolygonID: number = 0;
-  
+    public currentID: number = 0;
+    public root_bubble: Bubble = {} as Bubble;
   
     constructor(){
         csv('data/cars.csv')
@@ -18,7 +19,25 @@ export class Model{
             .parentId(function (d:any = {}) { return d.parent; })
             (csvData);
             console.log(root);
+            this.root_bubble = this.createRootBubble(root);
+            console.log(this.root_bubble);
+            view.startBubblz();
         })
+    }
+
+    getNewID(){
+        let id = this.currentID;
+        this.currentID++;
+        return id;
+    }
+
+    
+    createRootBubble(rootNode: HierarchyNode<any>){
+        let bubble = new Bubble();
+        if(rootNode.children != undefined){
+            bubble = Bubble.from(rootNode);
+        }
+        return bubble;
     }
 
     
