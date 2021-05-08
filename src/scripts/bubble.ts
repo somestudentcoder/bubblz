@@ -9,7 +9,7 @@ export class Bubble{
     public name: string = "";
     public body: p2.Body = {} as p2.Body;
     public children: Array<Bubble> = new Array<Bubble>();
-    
+
 
     constructor(){
         
