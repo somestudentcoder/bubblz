@@ -35,21 +35,21 @@ export class View{
             worldHeight: this.height,
             interaction: this.app.renderer.plugins.interaction
         });
-
-        setInterval(this.animate, 1000 * model.timeStep);
     }
 
-    animate(){
+    animate()
+    {
         model.world.step(model.timeStep);
         if(model.root_bubble.body != undefined){
-            console.log(model.root_bubble.body.position);
-            console.log(model.root_bubble.children[0].body.position);
+            //console.log(model.root_bubble.body.position);
+            //console.log(model.root_bubble.children[0].body.position);
         }
+        view.drawCircles()
     }
 
     startBubblz()
     {
-        this.drawCircles()
+        setInterval(this.animate, 1000 * model.timeStep);
     }
 
     drawCircles()
@@ -59,7 +59,7 @@ export class View{
         for (let index = 0; index < model.root_bubble.children.length; index++) {
             this.graphics.beginFill(0xFFFFFF);
             this.graphics.lineStyle({width: 2})
-            this.graphics.drawCircle((index * 50) + 30, 40, 15)
+            this.graphics.drawCircle(model.root_bubble.children[index].body.position[0], model.root_bubble.children[index].body.position[1], 15)
             this.graphics.endFill()
         }
     }
