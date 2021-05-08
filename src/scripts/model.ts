@@ -1,7 +1,7 @@
 import {csvParse} from "d3-dsv";
 import {csv, json} from "d3-fetch";
 import {hierarchy, HierarchyNode, stratify} from "d3-hierarchy";
-import { Bubble } from "./Bubble";
+import { Bubble } from "./bubble";
 import * as p2 from 'p2';
 
 
