@@ -19,7 +19,6 @@ export class Model{
             (csvData);
             console.log(root);
         })
-
     }
 
     

@@ -1,5 +1,6 @@
 import * as PIXI from 'pixi.js';
 import { Viewport } from 'pixi-viewport';
+import * as p2 from 'p2';
 
 export class View{
     public app: PIXI.Application;
@@ -8,6 +9,13 @@ export class View{
     public height: number;
 
     public viewport: Viewport;
+
+
+    //test
+    public timeStep: number;
+    public world: p2.World;
+    public circleBody: p2.Body;
+    public circle: PIXI.Graphics;
 
     constructor(){
         //init pixi
@@ -18,7 +26,7 @@ export class View{
             height: this.height, 
             resolution: window.devicePixelRatio,
             autoDensity: true, view: <HTMLCanvasElement>document.getElementById("main_canvas"), 
-            backgroundColor: 0xFFFFFF});
+            backgroundColor: 0x00FFFF});
         document.body.appendChild(this.app.view)
 
         //init stage & text containers
@@ -31,6 +39,49 @@ export class View{
             worldHeight: this.height,
             interaction: this.app.renderer.plugins.interaction
         });
+        
+
+        
+
+
+        //test
+        console.log("test");
+
+        this.circle  = new PIXI.Graphics();
+        this.app.stage.addChild(this.circle)
+
+        this.timeStep = 1/60;
+        this.world = new p2.World({
+            gravity:[0,-9.82]
+        });
+        this.circleBody = new p2.Body({
+            mass:5,
+            position:[100,1000]
+        });
+        var groundShape = new p2.Plane();
+        var groundBody = new p2.Body({
+            mass:0
+        });
+        groundBody.addShape(groundShape);
+        var circleShape = new p2.Circle({ radius: 1 });
+        this.circleBody.addShape(circleShape);
+        this.world.addBody(this.circleBody);
+        this.world.addBody(groundBody);
+
+        setInterval(this.animate, this.timeStep, this);
+    }
+
+    animate(view: View){
+        view.world.step(view.timeStep);
+        view.circle.clear();
+        view.circle.beginFill(0x000000);
+        view.circle.drawCircle(view.circleBody.position[0], view.circleBody.position[1], 30);
+        view.circle.endFill();
+        
+        console.log("Circle x position: " + view.circleBody.position[0]);
+        console.log("Circle y position: " + view.circleBody.position[1]);
+        console.log("Circle angle: " + view.circleBody.angle);
+        
     }
 
 }
