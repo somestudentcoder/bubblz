@@ -9,18 +9,22 @@ export class Bubble{
     public name: string = "";
     public body: p2.Body = new p2.Body();
     public children: Array<Bubble> = new Array<Bubble>();
+    public parent: Bubble = {} as Bubble;
 
 
     constructor(){
         
     }
 
-    static from(node: HierarchyNode<any>, parent?: Bubble){
+    static from(node: HierarchyNode<any>, parent_param?: Bubble){
         let bubble = new Bubble();
         bubble.id = model.getNewID();
+        if(parent_param){
+            bubble.parent = parent_param;
+        }
         bubble.body = new p2.Body({
             mass:5,
-            position:[100 + bubble.id,1000]
+            position:[view.width / 2 + bubble.id, view.height / 2]
         });
         bubble.body.addShape(new p2.Circle({ radius: 1 }));
         bubble.radius = Math.sqrt(node.data.weight / Math.PI);
@@ -28,7 +32,7 @@ export class Bubble{
         
         if(node.children != undefined){
             for(let child of node.children){
-                bubble.children.push(Bubble.from(child));
+                bubble.children.push(Bubble.from(child, bubble));
             }
         }
         

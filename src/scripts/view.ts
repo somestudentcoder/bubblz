@@ -35,6 +35,7 @@ export class View{
             worldHeight: this.height,
             interaction: this.app.renderer.plugins.interaction
         });
+        //this.stage.worldTransform.invert();
     }
 
     animate()
@@ -56,10 +57,10 @@ export class View{
     {
         this.app.stage.addChild(this.graphics)
         this.graphics.clear();
-        for (let index = 0; index < model.root_bubble.children.length; index++) {
+        for (let bubble of  model.root_bubble.children) {
             this.graphics.beginFill(0xFFFFFF);
             this.graphics.lineStyle({width: 2})
-            this.graphics.drawCircle(model.root_bubble.children[index].body.position[0], model.root_bubble.children[index].body.position[1], 15)
+            this.graphics.drawCircle(bubble.body.position[0], bubble.body.position[1], 15)
             this.graphics.endFill()
         }
     }
