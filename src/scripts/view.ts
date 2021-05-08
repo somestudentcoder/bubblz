@@ -17,7 +17,7 @@ export class View{
             width: this.width, 
             height: this.height, 
             resolution: window.devicePixelRatio,
-            autoDensity: true, view: <HTMLCanvasElement>document.getElementById("theCanvas"), 
+            autoDensity: true, view: <HTMLCanvasElement>document.getElementById("main_canvas"), 
             backgroundColor: 0xFFFFFF});
         document.body.appendChild(this.app.view)
 
