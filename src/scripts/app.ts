@@ -8,7 +8,6 @@ declare global {
    var view: View;
    var controller: Controller;
 }
-
 window.model = new Model();
 window.view = new View();
 window.controller = new Controller();
