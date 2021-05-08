@@ -42,9 +42,10 @@ export class View{
         
 
         
-
+        this.drawCircles();
 
         //test
+        /*
         console.log("test");
 
         this.circle  = new PIXI.Graphics();
@@ -69,6 +70,7 @@ export class View{
         this.world.addBody(groundBody);
 
         setInterval(this.animate, this.timeStep, this);
+        */
     }
 
     animate(view: View){
@@ -82,6 +84,11 @@ export class View{
         console.log("Circle y position: " + view.circleBody.position[1]);
         console.log("Circle angle: " + view.circleBody.angle);
         
+    }
+
+    drawCircles()
+    {
+
     }
 
 }
