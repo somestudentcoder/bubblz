@@ -53,17 +53,19 @@ export class View{
 
     startBubblz()
     {
-        setInterval(this.animate, 1000 * model.timeStep);
+        setInterval(this.animate, 100 * model.timeStep);
     }
 
     drawCircles() {
         this.app.stage.addChild(this.graphics)
         this.graphics.clear();
-        for (let bubble of model.root_bubble.children) {
-            this.graphics.beginFill(0xFFFFFF);
-            this.graphics.lineStyle({width: 2})
-            this.graphics.drawCircle(bubble.body.position[0], bubble.body.position[1], 15)
-            this.graphics.endFill()
+        if(model.root_bubble.children != undefined){
+            for (let bubble of model.root_bubble.children) {
+                this.graphics.beginFill(0xFFFFFF);
+                this.graphics.lineStyle({width: 2})
+                this.graphics.drawCircle(bubble.body.position[0], bubble.body.position[1], 15)
+                this.graphics.endFill()
+            }
         }
     }
     loadFileButton()

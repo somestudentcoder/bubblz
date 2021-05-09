@@ -1,8 +1,7 @@
 export class Controller{
 
-    private view = window.view;
-
     constructor(){
-        
+        model.createWalls();
+        view.startBubblz();
     }
 }

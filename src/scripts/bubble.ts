@@ -26,7 +26,7 @@ export class Bubble{
             mass:5,
             position:[view.width / 2 + bubble.id, view.height / 2]
         });
-        bubble.body.addShape(new p2.Circle({ radius: 1 }));
+        bubble.body.addShape(new p2.Circle({ radius: 2 }));
         bubble.radius = Math.sqrt(node.data.weight / Math.PI);
         bubble.name = node.data.name;
         

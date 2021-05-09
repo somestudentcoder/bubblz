@@ -14,8 +14,12 @@ export class Model{
   
     constructor(){
         this.world = new p2.World({
-            gravity:[0,-9.82]
+            gravity:[0, -9.82]
         });
+        this.world.defaultContactMaterial.friction = 0.5;
+        this.world.defaultContactMaterial.restitution = 1.1;
+
+
         csv('data/cars.csv')
         .then((csvData) => {
           let root = stratify()
@@ -25,7 +29,6 @@ export class Model{
             console.log(root);
             this.root_bubble = this.createRootBubble(root);
             console.log(this.root_bubble);
-            view.startBubblz();
         })
     }
 
@@ -33,6 +36,22 @@ export class Model{
         let id = this.currentID;
         this.currentID++;
         return id;
+    }
+
+    createWalls(){
+        this.createWall(0, [0, 0]);
+        this.createWall(Math.PI / 2, [view.width, 0]);
+        this.createWall((3 * Math.PI) / 2, [0, 0]);
+        this.createWall(Math.PI, [0, view.height]);
+    }
+
+    createWall(angle_param: number, position_param: [number, number]){
+        let wall = new p2.Body({
+            angle: angle_param,
+            position: position_param
+        });
+        wall.addShape(new p2.Plane);
+        this.world.addBody(wall);
     }
 
     
