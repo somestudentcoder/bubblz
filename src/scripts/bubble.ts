@@ -24,7 +24,7 @@ export class Bubble{
             bubble.parent = parent_param;
         }
         bubble.weight = node.data.weight;
-        bubble.radius = Math.sqrt(node.data.weight / Math.PI) * 10;
+        bubble.radius = Math.sqrt(node.data.weight / Math.PI) * 50;
         //bubble.radius = 15;
         bubble.body = new p2.Body({
             mass:5,

@@ -16,8 +16,8 @@ export class Model{
         this.world = new p2.World({
             gravity:[0, -9.82]
         });
-        this.world.defaultContactMaterial.friction = 0.5;
-        this.world.defaultContactMaterial.restitution = 1;
+        this.world.defaultContactMaterial.friction = 0.1;
+        this.world.defaultContactMaterial.restitution = 0.3;
 
 
         csv('data/cars.csv')
@@ -29,6 +29,7 @@ export class Model{
 
             this.calculateWeight(root);
             this.root_bubble = this.createRootBubble(root);
+            view.current_root = this.root_bubble;
             console.log(this.root_bubble);
         })
     }
