@@ -28,10 +28,8 @@ export class Model{
             (csvData);
 
             this.calculateWeight(root);
-            console.log(root);
-            console.log(this.root_bubble);
             this.root_bubble = this.createRootBubble(root);
-            
+            console.log(this.root_bubble);
         })
     }
 

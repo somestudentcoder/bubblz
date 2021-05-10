@@ -7,8 +7,9 @@ export class Controller{
         view.startBubblz();
     }
 
-    getWeight(node: Bubble)
-    {
-        
+    onClick(x: number, y: number){
+        console.log("hi");
+        console.log(x);
+        console.log(y);
     }
 }

@@ -37,7 +37,9 @@ export class View{
             worldHeight: this.height,
             interaction: this.app.renderer.plugins.interaction
         });
-        //this.stage.worldTransform.invert();
+        
+        this.viewport.on('clicked', (e) => controller.onClick(e.data.global.x, e.data.global.y));
+
         document.getElementById("load-file-button")!.onclick = (e) => {
             this.loadFileButton()
         }
