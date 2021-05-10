@@ -10,6 +10,7 @@ export class Bubble{
     public body: p2.Body = new p2.Body();
     public children: Array<Bubble> = new Array<Bubble>();
     public parent: Bubble = {} as Bubble;
+    public weight: number = 0
 
 
     constructor(){
