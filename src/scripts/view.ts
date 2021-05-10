@@ -63,7 +63,7 @@ export class View{
             for (let bubble of model.root_bubble.children) {
                 this.graphics.beginFill(0xFFFFFF);
                 this.graphics.lineStyle({width: 2})
-                this.graphics.drawCircle(bubble.body.position[0], bubble.body.position[1], 15)
+                this.graphics.drawCircle(bubble.body.position[0], bubble.body.position[1], bubble.radius)
                 this.graphics.endFill()
             }
         }
