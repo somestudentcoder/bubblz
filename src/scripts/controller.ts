@@ -6,7 +6,7 @@ export class Controller{
         model.createWalls();
         view.startBubblz();
     }
-
+/*
     calculateWeight(node: Bubble)
     {
         let weight = this.getWeight(root.data);
@@ -25,6 +25,6 @@ export class Controller{
 
     getWeight(node: Bubble)
     {
-        
-    }
+        return 1
+    }*/
 }

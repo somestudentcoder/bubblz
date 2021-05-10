@@ -28,6 +28,7 @@ export class Model{
             (csvData);
             console.log(root);
             this.root_bubble = this.createRootBubble(root);
+            view.current_root = this. root_bubble;
             console.log(this.root_bubble);
         })
     }
