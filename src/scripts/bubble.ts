@@ -34,8 +34,6 @@ export class Bubble{
         bubble.body.addShape(new p2.Circle({ radius: bubble.radius / 15 }));
         bubble.name = node.data.name;
 
-        console.log(bubble.weight);
-        console.log(bubble.name);
         if(node.children != undefined){
             for(let child of node.children){
                 bubble.children.push(Bubble.from(child, bubble));
