@@ -66,13 +66,12 @@ export class View{
     drawCircles() {
         this.app.stage.addChild(this.bubbles)
         this.bubbles.clear();
-        if(model.root_bubble.children != undefined){
-            for (let bubble of model.root_bubble.children) {
+        if(this.current_root.children != undefined){
+            for (let bubble of this.current_root.children) {
                 this.bubbles.beginFill(0xFFFFFF);
                 this.bubbles.lineStyle({width: 2})
                 this.bubbles.drawCircle(bubble.body.position[0], bubble.body.position[1], bubble.radius)
                 this.bubbles.endFill()
-                break
             }
         }
     }
