@@ -10,6 +10,7 @@ export class Bubble{
     public body: p2.Body = {} as p2.Body;
     public children: Array<Bubble> = new Array<Bubble>();
     public parent: Bubble = {} as Bubble;
+    public weight: number = 0
 
 
     constructor(){
@@ -22,8 +23,9 @@ export class Bubble{
         if(parent_param){
             bubble.parent = parent_param;
         }
-        //bubble.radius = Math.sqrt(node.data.weight / Math.PI);
-        bubble.radius = 15;
+        bubble.weight = node.data.weight;
+        bubble.radius = Math.sqrt(node.data.weight / Math.PI);
+        //bubble.radius = 15;
         bubble.body = new p2.Body({
             mass:5,
             position:[view.width / 2 + bubble.id, view.height / 2]
@@ -31,7 +33,9 @@ export class Bubble{
         
         bubble.body.addShape(new p2.Circle({ radius: bubble.radius / 15 }));
         bubble.name = node.data.name;
-        
+
+        console.log(bubble.weight);
+        console.log(bubble.name);
         if(node.children != undefined){
             for(let child of node.children){
                 bubble.children.push(Bubble.from(child, bubble));

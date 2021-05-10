@@ -2,6 +2,8 @@ import * as PIXI from 'pixi.js';
 import { Viewport } from 'pixi-viewport';
 import p2 = require('p2');
 
+const MAXRADIUS: number = 800;
+
 
 export class View{
     public app: PIXI.Application;
@@ -65,9 +67,11 @@ export class View{
                 this.graphics.lineStyle({width: 2})
                 this.graphics.drawCircle(bubble.body.position[0], bubble.body.position[1], bubble.radius)
                 this.graphics.endFill()
+                break
             }
         }
     }
+
     loadFileButton()
     {
         let input = document.createElement('input');
