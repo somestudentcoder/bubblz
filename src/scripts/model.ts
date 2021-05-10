@@ -11,7 +11,7 @@ export class Model{
     public root_bubble: Bubble = {} as Bubble;
     public timeStep: number = 1 / 60;
     public world: p2.World = {} as p2.World;
-  
+
     constructor(){
         this.world = new p2.World({
             gravity:[0, -9.82]
@@ -26,12 +26,15 @@ export class Model{
             .id(function (d:any = {}) { return d.name; })
             .parentId(function (d:any = {}) { return d.parent; })
             (csvData);
+
+            this.calculateWeight(root);
             console.log(root);
-            this.root_bubble = this.createRootBubble(root);
-            view.current_root = this. root_bubble;
             console.log(this.root_bubble);
+            this.root_bubble = this.createRootBubble(root);
+            
         })
     }
+
 
     getNewID(){
         let id = this.currentID;
@@ -39,12 +42,14 @@ export class Model{
         return id;
     }
 
+
     createWalls(){
         this.createWall(0, [0, 0]);
         this.createWall(Math.PI / 2, [view.width, 0]);
         this.createWall((3 * Math.PI) / 2, [0, 0]);
         this.createWall(Math.PI, [0, view.height]);
     }
+
 
     createWall(angle_param: number, position_param: [number, number]){
         let wall = new p2.Body({
@@ -63,6 +68,33 @@ export class Model{
         }
         return bubble;
     }
+
+
+    calculateWeight(node: HierarchyNode<any>){
+        let weight = this.getWeight(node.data);
+        if(weight == undefined || weight == ""){
+          if(node.children == undefined){
+            console.error("node has no weight and no children");
+            return;
+          }
+          weight = 0;
+          for(let child of node.children){
+            weight += this.calculateWeight(child);
+          }
+        }
+        node.data.weight = weight;
+        return parseFloat(weight);
+    }
+
+
+    getWeight(obj: any = {}){
+        if(obj.hasOwnProperty('bubble_weight')){
+          return obj.bubble_weight;
+        }
+        else{
+          return obj.weight;
+        }
+      }
 
     
     hasUniqueParents(columns: string[]) {
