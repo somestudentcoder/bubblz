@@ -24,14 +24,14 @@ export class Bubble{
             bubble.parent = parent_param;
         }
         bubble.weight = node.data.weight;
-        bubble.radius = Math.sqrt(bubble.weight / Math.PI);
+        bubble.radius = Math.sqrt(node.data.weight / Math.PI) * 10;
         //bubble.radius = 15;
         bubble.body = new p2.Body({
             mass:5,
             position:[view.width / 2 + bubble.id, view.height / 2]
         });
         
-        bubble.body.addShape(new p2.Circle({ radius: bubble.radius / 15 }));
+        bubble.body.addShape(new p2.Circle({ radius: bubble.radius }));
         bubble.name = node.data.name;
 
         if(node.children != undefined){

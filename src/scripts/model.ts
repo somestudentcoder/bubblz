@@ -17,7 +17,7 @@ export class Model{
             gravity:[0, -9.82]
         });
         this.world.defaultContactMaterial.friction = 0.5;
-        this.world.defaultContactMaterial.restitution = 1.1;
+        this.world.defaultContactMaterial.restitution = 1;
 
 
         csv('data/cars.csv')
