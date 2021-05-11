@@ -16,6 +16,8 @@ export class View{
     public bubbles: PIXI.Graphics;
     public labels: PIXI.Graphics;
 
+    public label_list: Array<PIXI.Text> = [] as Array<PIXI.Text>;
+
     public current_root: Bubble = {} as Bubble;
 
 
@@ -44,7 +46,7 @@ export class View{
             interaction: this.app.renderer.plugins.interaction
         });
         
-        this.viewport.on('clicked', (e) => controller.onClick(e.data.global.x, e.data.global.y));
+        //this.viewport.on('clicked', (e) => controller.onClick(e.data.global.x, e.data.global.y));
 
         document.getElementById("load-file-button")!.onclick = (e) => {
             this.loadFileButton()
@@ -55,18 +57,20 @@ export class View{
     {
         model.world.step(model.timeStep);
 
-        view.app.stage.removeChildren()
+        //view.app.stage.removeChildren()
         view.drawCircles()
         view.drawLabels()
     }
 
     startBubblz()
     {
-        setInterval(this.animate, 100 * model.timeStep);
+        this.app.stage.addChild(this.bubbles)
+        setInterval(this.animate, 30 * model.timeStep);
+        
     }
 
     drawCircles() {
-        this.app.stage.addChild(this.bubbles)
+        //this.app.stage.addChild(this.bubbles)
         this.bubbles.clear();
         if(this.current_root.children != undefined){
             for (let bubble of this.current_root.children) {
@@ -80,10 +84,18 @@ export class View{
 
     drawLabels()
     {
+        //cleanup
+        for(let text of this.label_list)
+        {
+            this.app.stage.removeChild(text);
+            text.destroy;
+        }
+        this.label_list = [];
+
         if(this.current_root.children != undefined)
         {
             this.current_root.children.forEach(child => {
-                let text = new PIXI.Text(child.name, {fill: 0xff0000,  stroke: 0x000000, strokeThickness: (0.5), fontSize: 40});
+                let text = new PIXI.Text(child.name, {fill: 0x000000,  stroke: 0x000000, strokeThickness: (0.5), fontSize: 40});
                 text.anchor.set(0.5);
                 //text.resolution = 2 * (1/this.zoom_factor);
                 text.position.set(child.body.position[0], child.body.position[1]);
@@ -98,6 +110,7 @@ export class View{
                     let new_x = child.body.position[0] - ((child.body.position[0] + (box.width / 2) - this.width));
                     text.position.set(new_x, child.body.position[1])
                 }
+                this.label_list.push(text);
                 this.app.stage.addChild(text);
             });
         }
