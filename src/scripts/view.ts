@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import { Viewport } from 'pixi-viewport';
+import { ClickEventData, Viewport } from 'pixi-viewport';
 import p2 = require('p2');
 import { Bubble } from "./bubble";
 
@@ -14,11 +14,14 @@ export class View{
     public viewport: Viewport;
 
     public bubbles: PIXI.Graphics;
+    public parentBubble: PIXI.Graphics;
     public labels: PIXI.Graphics;
 
     public label_list: Array<PIXI.Text> = [] as Array<PIXI.Text>;
 
     public current_root: Bubble = {} as Bubble;
+
+    public zoom_factor: number = 1;
 
 
     constructor(){
@@ -36,6 +39,7 @@ export class View{
         //init stage & text containers
         //this.stage = new PIXI.Container();
         this.bubbles = new PIXI.Graphics();
+        this.parentBubble = new PIXI.Graphics();
         this.labels = new PIXI.Graphics();
 
         this.viewport = new Viewport({
@@ -46,7 +50,18 @@ export class View{
             interaction: this.app.renderer.plugins.interaction
         });
         
-        //this.viewport.on('clicked', (e) => controller.onClick(e.data.global.x, e.data.global.y));
+        this.app.stage.addChild(this.viewport);
+
+        this.viewport
+        .bounce()
+        .drag()
+        .wheel()
+        .pinch()
+        .decelerate()
+        .clamp({ direction: 'all' })
+        .clampZoom({maxWidth: this.width, maxHeight:this.height})
+
+        this.viewport.on('clicked', (e: ClickEventData) => controller.userClick(e.world.x, e.world.y));
 
         document.getElementById("load-file-button")!.onclick = (e) => {
             this.loadFileButton()
@@ -58,23 +73,34 @@ export class View{
         model.world.step(model.timeStep);
 
         //view.app.stage.removeChildren()
-        view.drawCircles()
+        view.drawBubblz()
         view.drawLabels()
     }
 
     startBubblz()
     {
         this.app.stage.addChild(this.bubbles)
+        this.app.stage.addChild(this.parentBubble)
         setInterval(this.animate, 30 * model.timeStep);
         
     }
 
-    drawCircles() {
+    drawBubblz() {
         //this.app.stage.addChild(this.bubbles)
         this.bubbles.clear();
-        if(this.current_root.children != undefined){
+        this.parentBubble.clear();
+        if(this.current_root != model.root_bubble)
+        {
+            this.parentBubble.alpha = 0.8
+            this.parentBubble.beginFill(this.current_root.color);
+            this.parentBubble.lineStyle({width: 2})
+            this.parentBubble.drawCircle(this.current_root.body.position[0], this.current_root.body.position[1], this.current_root.radius)
+            this.parentBubble.endFill()
+        }
+        if(this.current_root.children != undefined)
+        {
             for (let bubble of this.current_root.children) {
-                this.bubbles.beginFill(0xFFFFFF);
+                this.bubbles.beginFill(bubble.color);
                 this.bubbles.lineStyle({width: 2})
                 this.bubbles.drawCircle(bubble.body.position[0], bubble.body.position[1], bubble.radius)
                 this.bubbles.endFill()

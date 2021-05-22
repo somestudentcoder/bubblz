@@ -4,7 +4,7 @@ import * as p2 from 'p2';
 
 export class Bubble{
     public radius: number = 1;
-    public color: number = -1;
+    public color: number = 0xFFFFFF;
     public id: number = -1;
     public name: string = "";
     public body: p2.Body = {} as p2.Body;
@@ -42,5 +42,19 @@ export class Bubble{
         
         model.world.addBody(bubble.body);
         return bubble;
+    }
+
+    contains(x: number, y: number)
+    {
+        let dist = (x - this.body.position[0]) * (x - this.body.position[0]) + (y - this.body.position[1]) * (y - this.body.position[1])
+
+        if(dist < this.radius * this.radius)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }
