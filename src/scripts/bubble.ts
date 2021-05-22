@@ -39,21 +39,20 @@ export class Bubble{
                 bubble.children.push(Bubble.from(child, bubble));
             }
         }
+        if(node.depth < 2 && node.depth > 0){
+            model.world.addBody(bubble.body);
+        }
         
-        model.world.addBody(bubble.body);
         return bubble;
     }
 
-    contains(x: number, y: number)
-    {
-        let dist = (x - this.body.position[0]) * (x - this.body.position[0]) + (y - this.body.position[1]) * (y - this.body.position[1])
+    contains(x: number, y: number){
+        let dist = Math.sqrt((x - this.body.position[0]) * (x - this.body.position[0]) + (y - this.body.position[1]) * (y - this.body.position[1]));
 
-        if(dist < this.radius * this.radius)
-        {
+        if(dist < this.radius){
             return true;
         }
-        else
-        {
+        else{
             return false;
         }
     }

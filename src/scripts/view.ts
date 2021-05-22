@@ -19,8 +19,6 @@ export class View{
 
     public label_list: Array<PIXI.Text> = [] as Array<PIXI.Text>;
 
-    public current_root: Bubble = {} as Bubble;
-
     public zoom_factor: number = 1;
 
 
@@ -68,8 +66,7 @@ export class View{
         }
     }
 
-    animate()
-    {
+    animate(){
         model.world.step(model.timeStep);
 
         //view.app.stage.removeChildren()
@@ -77,8 +74,7 @@ export class View{
         view.drawLabels()
     }
 
-    startBubblz()
-    {
+    startBubblz(){
         this.app.stage.addChild(this.bubbles)
         this.app.stage.addChild(this.parentBubble)
         setInterval(this.animate, 30 * model.timeStep);
@@ -89,17 +85,15 @@ export class View{
         //this.app.stage.addChild(this.bubbles)
         this.bubbles.clear();
         this.parentBubble.clear();
-        if(this.current_root != model.root_bubble)
-        {
+        if(model.current_root != model.root_bubble){
             this.parentBubble.alpha = 0.8
-            this.parentBubble.beginFill(this.current_root.color);
+            this.parentBubble.beginFill(model.current_root.color);
             this.parentBubble.lineStyle({width: 2})
-            this.parentBubble.drawCircle(this.current_root.body.position[0], this.current_root.body.position[1], this.current_root.radius)
+            this.parentBubble.drawCircle(model.current_root.body.position[0], model.current_root.body.position[1], model.current_root.radius)
             this.parentBubble.endFill()
         }
-        if(this.current_root.children != undefined)
-        {
-            for (let bubble of this.current_root.children) {
+        if(model.current_root.children != undefined){
+            for (let bubble of model.current_root.children) {
                 this.bubbles.beginFill(bubble.color);
                 this.bubbles.lineStyle({width: 2})
                 this.bubbles.drawCircle(bubble.body.position[0], bubble.body.position[1], bubble.radius)
@@ -108,31 +102,26 @@ export class View{
         }
     }
 
-    drawLabels()
-    {
+    drawLabels(){
         //cleanup
-        for(let text of this.label_list)
-        {
+        for(let text of this.label_list){
             this.app.stage.removeChild(text);
             text.destroy;
         }
         this.label_list = [];
 
-        if(this.current_root.children != undefined)
-        {
-            this.current_root.children.forEach(child => {
+        if(model.current_root.children != undefined){
+            model.current_root.children.forEach(child => {
                 let text = new PIXI.Text(child.name, {fill: 0x000000,  stroke: 0x000000, strokeThickness: (0.5), fontSize: 40});
                 text.anchor.set(0.5);
                 //text.resolution = 2 * (1/this.zoom_factor);
                 text.position.set(child.body.position[0], child.body.position[1]);
                 let box = text.getLocalBounds(new PIXI.Rectangle);
-                if(child.body.position[0] - (box.width / 2) < 0)
-                {
+                if(child.body.position[0] - (box.width / 2) < 0){
                     let new_x = child.body.position[0] + ((child.body.position[0] - (box.width / 2)) * -1);
                     text.position.set(new_x, child.body.position[1])
                 }
-                else if(child.body.position[0] + (box.width / 2) > this.width)
-                {
+                else if(child.body.position[0] + (box.width / 2) > this.width){
                     let new_x = child.body.position[0] - ((child.body.position[0] + (box.width / 2) - this.width));
                     text.position.set(new_x, child.body.position[1])
                 }
@@ -142,8 +131,7 @@ export class View{
         }
     }
 
-    loadFileButton()
-    {
+    loadFileButton(){
         let input = document.createElement('input');
         input.type = 'file';
         input.onchange = _ => {

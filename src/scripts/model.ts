@@ -11,13 +11,14 @@ export class Model{
     public root_bubble: Bubble = {} as Bubble;
     public timeStep: number = 1 / 60;
     public world: p2.World = {} as p2.World;
+    public current_root: Bubble = {} as Bubble;
 
     constructor(){
         this.world = new p2.World({
             gravity:[0, -9.82]
         });
         this.world.defaultContactMaterial.friction = 0.1;
-        this.world.defaultContactMaterial.restitution = 0.3;
+        this.world.defaultContactMaterial.restitution = 0.7;
 
 
         csv('data/cars.csv')
@@ -29,7 +30,8 @@ export class Model{
 
             this.calculateWeight(root);
             this.root_bubble = this.createRootBubble(root);
-            view.current_root = this.root_bubble;
+            this.current_root = this.root_bubble;
+            console.log(root);
             console.log(this.root_bubble);
         })
     }
@@ -41,6 +43,20 @@ export class Model{
         return id;
     }
 
+
+    setNewRoot(bubble: Bubble){
+      for(let child of this.current_root.children){
+        this.world.removeBody(child.body);
+      }
+      for(let child of bubble.children){
+        this.world.addBody(child.body);
+      }
+      console.log("old root");
+      console.log(this.current_root);
+      console.log("new root");
+      console.log(bubble)
+      this.current_root = bubble;
+    }
 
     createWalls(){
         this.createWall(0, [0, 0]);

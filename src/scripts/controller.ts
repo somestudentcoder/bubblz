@@ -10,11 +10,9 @@ export class Controller{
 
     userClick(x: number, y: number){
         console.log("x:", x,"y:", y)
-        for(let bubble of view.current_root.children)
-        {
+        for(let bubble of model.current_root.children){
             if (bubble.contains(x, y)) {
-                if(bubble.children.length == 0)
-                {
+                if(bubble.children.length == 0){
                     return;
                 }
                 console.log(bubble.id)
@@ -25,18 +23,19 @@ export class Controller{
                 let size_ratio = this.calculateZoomFactor(bubble)
                 view.viewport.snapZoom({removeOnComplete: true, height: view.viewport.worldScreenHeight * size_ratio, center: new PIXI.Point(bubble.body.position[0], bubble.body.position[1]), time: 1200, removeOnInterrupt: true});
                 view.zoom_factor *= size_ratio;
-                view.current_root = bubble;
+                model.setNewRoot(bubble);
                 view.drawBubblz();
                 return;
             }
         }
-        // let parent = view.current_root.polygon_parent;
-        // let size_ratio = this.calculateZoomFactor(parent)
-        // view.viewport.snapZoom({removeOnComplete: true, height: view.viewport.worldScreenHeight * size_ratio, center: new PIXI.Point(parent.center.x, parent.center.y), time: 1200, removeOnInterrupt: true});
-        // view.zoom_factor *= size_ratio;
-        // view.current_root = parent;
-        // view.showTreemap(view.current_root);
-        // return;
+        let parent = model.current_root.parent;
+        //let size_ratio = this.calculateZoomFactor(parent)
+        //view.viewport.snapZoom({removeOnComplete: true, height: view.viewport.worldScreenHeight * size_ratio, center: new PIXI.Point(parent.body.position[0], parent.body.position[1]), time: 1200, removeOnInterrupt: true});
+        //view.zoom_factor *= size_ratio;
+        if(Object.keys(parent).length !== 0){
+            model.setNewRoot(parent);
+        }
+        return;
     }
 
     calculateZoomFactor(bubble: Bubble){
