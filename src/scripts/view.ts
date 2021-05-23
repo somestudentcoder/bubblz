@@ -77,7 +77,7 @@ export class View{
     startBubblz(){
         this.app.stage.addChild(this.bubbles)
         this.app.stage.addChild(this.parentBubble)
-        setInterval(this.animate, 30 * model.timeStep);
+        setInterval(this.animate, 1000 * model.timeStep);
         
     }
 

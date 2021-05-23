@@ -9,7 +9,7 @@ import * as p2 from 'p2';
 export class Model{
     public currentID: number = 0;
     public root_bubble: Bubble = {} as Bubble;
-    public timeStep: number = 1 / 60;
+    public timeStep: number = 1 / 30;
     public world: p2.World = {} as p2.World;
     public current_root: Bubble = {} as Bubble;
 

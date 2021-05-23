@@ -31,7 +31,8 @@ export class Bubble{
             position:[view.width / 2 + bubble.id, view.height / 2]
         });
         
-        bubble.body.addShape(new p2.Circle({ radius: bubble.radius }));
+        //bubble.body.addShape(new p2.Circle({ radius: bubble.radius }));
+        bubble.buildCircle(bubble.radius);
         bubble.name = node.data.name;
 
         if(node.children != undefined){
@@ -56,4 +57,29 @@ export class Bubble{
             return false;
         }
     }
+
+
+    buildCircle(radius: number, sides?: number, width?: number, extraLength?: number) {
+        if(!sides){
+            sides = 50;
+        }
+        if(!width){
+            width = 1;
+        }
+        if(!extraLength){
+            extraLength = 3;
+        }
+      
+        const theta = 2 * Math.PI / sides;
+        const sideLength = 2 * radius * theta/2 * extraLength;
+      
+        for (let i = 0; i < sides; i++) {
+            // We'll build thin sides and then translate + rotate them appropriately.
+            const shape = new p2.Box({
+                width: sideLength, 
+                height: width
+            });
+            this.body.addShape(shape, [radius * Math.sin(i * theta), -radius * Math.cos(i * theta)], i * theta)
+        }
+      }
 }
