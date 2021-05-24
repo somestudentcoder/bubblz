@@ -98,6 +98,15 @@ export class View{
                 this.bubbles.lineStyle({width: 2})
                 this.bubbles.drawCircle(bubble.body.position[0], bubble.body.position[1], bubble.radius)
                 this.bubbles.endFill()
+
+                if(bubble.children != undefined){
+                    for (let child of bubble.children) {
+                        this.bubbles.beginFill(bubble.color);
+                        this.bubbles.lineStyle({width: 2})
+                        this.bubbles.drawCircle(child.body.position[0], child.body.position[1], child.radius)
+                        this.bubbles.endFill()
+                    }
+                }
             }
         }
     }

@@ -3,6 +3,7 @@ import {hierarchy, HierarchyNode, stratify} from "d3-hierarchy";
 import * as p2 from 'p2';
 
 export class Bubble{
+
     public radius: number = 1;
     public color: number = 0xFFFFFF;
     public id: number = -1;
@@ -10,7 +11,9 @@ export class Bubble{
     public body: p2.Body = {} as p2.Body;
     public children: Array<Bubble> = new Array<Bubble>();
     public parent: Bubble = {} as Bubble;
-    public weight: number = 0
+    public weight: number = 0;
+    public depth: number = 0;
+    public height: number = 0;
 
 
     constructor(){
@@ -24,26 +27,25 @@ export class Bubble{
             bubble.parent = parent_param;
         }
         bubble.weight = node.data.weight;
-        bubble.radius = Math.sqrt(node.data.weight / Math.PI) * 50;
-        //bubble.radius = 15;
+        bubble.radius = bubble.weight * 5;
+        //bubble.radius = Math.sqrt(node.data.weight / Math.PI) * 50;
         bubble.body = new p2.Body({
             mass:5,
             position:[view.width / 2 + bubble.id, view.height / 2]
         });
         
-        //bubble.body.addShape(new p2.Circle({ radius: bubble.radius }));
-        bubble.buildCircle(bubble.radius);
-        bubble.name = node.data.name;
+        // create shapes
+        bubble.body.addShape(new p2.Circle({ radius: bubble.radius }));
+        //bubble.buildHollowCircle(bubble.radius);
 
+        bubble.name = node.data.name;
+        bubble.depth = node.depth;
+        bubble.height = node.height;
         if(node.children != undefined){
             for(let child of node.children){
                 bubble.children.push(Bubble.from(child, bubble));
             }
         }
-        if(node.depth < 2 && node.depth > 0){
-            model.world.addBody(bubble.body);
-        }
-        
         return bubble;
     }
 
@@ -59,9 +61,9 @@ export class Bubble{
     }
 
 
-    buildCircle(radius: number, sides?: number, width?: number, extraLength?: number) {
+    buildHollowCircle(radius: number, sides?: number, width?: number, extraLength?: number) {
         if(!sides){
-            sides = 50;
+            sides = 10;
         }
         if(!width){
             width = 1;
@@ -81,5 +83,5 @@ export class Bubble{
             });
             this.body.addShape(shape, [radius * Math.sin(i * theta), -radius * Math.cos(i * theta)], i * theta)
         }
-      }
+    }
 }

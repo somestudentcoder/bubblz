@@ -4,7 +4,6 @@ import * as PIXI from 'pixi.js';
 export class Controller{
 
     constructor(){
-        model.createWalls();
         view.startBubblz();
     }
 

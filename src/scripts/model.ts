@@ -7,6 +7,12 @@ import * as p2 from 'p2';
 
 
 export class Model{
+    PARENT_FILLED_GROUP: number = Math.pow(2, 1);
+    PARENT_HOLLOW_GROUP: number = Math.pow(2, 2);
+    CHILD_GROUP: number = Math.pow(2, 3);
+    BOUNDARY_GROUP: number = Math.pow(2, 4);
+    NO_COLLISION_GROUP: number = Math.pow(2, 5);
+
     public currentID: number = 0;
     public root_bubble: Bubble = {} as Bubble;
     public timeStep: number = 1 / 30;
@@ -30,7 +36,7 @@ export class Model{
 
             this.calculateWeight(root);
             this.root_bubble = this.createRootBubble(root);
-            this.current_root = this.root_bubble;
+            this.setNewRoot(this.root_bubble);
             console.log(root);
             console.log(this.root_bubble);
         })
@@ -44,18 +50,70 @@ export class Model{
     }
 
 
-    setNewRoot(bubble: Bubble){
-      for(let child of this.current_root.children){
-        this.world.removeBody(child.body);
+    setNewRoot(new_root: Bubble){
+      // remove all bodies from world
+      for(let body of model.world.bodies){
+        model.world.removeBody(body);
       }
-      for(let child of bubble.children){
-        this.world.addBody(child.body);
-      }
+      // add walls back in
+      model.createWalls();
+      // add bodies to world
+      for(let bubble of new_root.children){
+            for(let bubble_shape of bubble.body.shapes){
+
+                // set phyiscs of first layer
+                if(bubble_shape == bubble.body.shapes[0]){
+                    this.setParentFilledCollision(bubble_shape);
+                }
+                else{
+                    this.setParentHollowCollision(bubble_shape);
+                }
+                
+                // set physics of second layer
+                for(let child of bubble.children){
+                    for(let child_shape of child.body.shapes){
+                        if(child_shape == child.body.shapes[0]){
+                            this.setChildCollision(child_shape);
+                        }
+                        else{
+                            this.setNoCollision(child_shape);
+                        }
+                    }
+                    this.world.addBody(child.body);
+                }
+            }
+            this.world.addBody(bubble.body);
+        }
       console.log("old root");
       console.log(this.current_root);
       console.log("new root");
-      console.log(bubble)
-      this.current_root = bubble;
+      console.log(new_root)
+      this.current_root = new_root;
+    }
+
+    setNoCollision(shape:p2.Shape){
+        shape.collisionGroup = model.NO_COLLISION_GROUP;
+        shape.collisionMask = 0;
+    }
+
+    setBoundaryCollision(shape: p2.Shape){
+        shape.collisionGroup = model.BOUNDARY_GROUP;
+        shape.collisionMask = model.PARENT_FILLED_GROUP | model.CHILD_GROUP;
+    }
+
+    setParentHollowCollision(shape: p2.Shape){
+        shape.collisionGroup = model.PARENT_HOLLOW_GROUP;
+        shape.collisionMask = model.CHILD_GROUP;
+    }
+
+    setParentFilledCollision(shape: p2.Shape){
+        shape.collisionGroup = model.PARENT_FILLED_GROUP;
+        shape.collisionMask = model.PARENT_FILLED_GROUP | model.BOUNDARY_GROUP;
+    }
+
+    setChildCollision(shape: p2.Shape){
+        shape.collisionGroup = model.CHILD_GROUP;
+        shape.collisionMask = model.PARENT_HOLLOW_GROUP | model.CHILD_GROUP | model.BOUNDARY_GROUP;
     }
 
     createWalls(){
@@ -71,7 +129,9 @@ export class Model{
             angle: angle_param,
             position: position_param
         });
-        wall.addShape(new p2.Plane);
+        let plane = new p2.Plane;
+        this.setBoundaryCollision(plane);
+        wall.addShape(plane);
         this.world.addBody(wall);
     }
 
