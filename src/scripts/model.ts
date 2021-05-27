@@ -64,6 +64,7 @@ export class Model{
                 // set phyiscs of first layer
                 if(bubble_shape == bubble.body.shapes[0]){
                     this.setParentFilledCollision(bubble_shape);
+                    
                 }
                 else{
                     this.setParentHollowCollision(bubble_shape);
@@ -73,6 +74,7 @@ export class Model{
                 for(let child of bubble.children){
                     for(let child_shape of child.body.shapes){
                         if(child_shape == child.body.shapes[0]){
+                            
                             this.setChildCollision(child_shape);
                         }
                         else{

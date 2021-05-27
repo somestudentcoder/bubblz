@@ -14,6 +14,7 @@ export class View{
     public viewport: Viewport;
 
     public bubbles: PIXI.Graphics;
+    public boxes: PIXI.Graphics;
     public parentBubble: PIXI.Graphics;
     public labels: PIXI.Graphics;
 
@@ -37,6 +38,7 @@ export class View{
         //init stage & text containers
         //this.stage = new PIXI.Container();
         this.bubbles = new PIXI.Graphics();
+        this.boxes = new PIXI.Graphics();
         this.parentBubble = new PIXI.Graphics();
         this.labels = new PIXI.Graphics();
 
@@ -57,12 +59,12 @@ export class View{
         .pinch()
         .decelerate()
         .clamp({ direction: 'all' })
-        .clampZoom({maxWidth: this.width, maxHeight:this.height})
+        .clampZoom({maxWidth: this.width, maxHeight:this.height});
 
         this.viewport.on('clicked', (e: ClickEventData) => controller.userClick(e.world.x, e.world.y));
 
         document.getElementById("load-file-button")!.onclick = (e) => {
-            this.loadFileButton()
+            this.loadFileButton();
         }
     }
 
@@ -70,41 +72,78 @@ export class View{
         model.world.step(model.timeStep);
 
         //view.app.stage.removeChildren()
-        view.drawBubblz()
-        view.drawLabels()
+        view.drawBubbles();
+        view.drawLabels();
+        //view.drawBoxes();
     }
 
     startBubblz(){
-        this.app.stage.addChild(this.bubbles)
-        this.app.stage.addChild(this.parentBubble)
+        this.app.stage.addChild(this.bubbles);
+        this.app.stage.addChild(this.parentBubble);
+        this.app.stage.addChild(this.boxes);
         setInterval(this.animate, 1000 * model.timeStep);
         
     }
 
-    drawBubblz() {
+    drawBubbles() {
         //this.app.stage.addChild(this.bubbles)
         this.bubbles.clear();
         this.parentBubble.clear();
         if(model.current_root != model.root_bubble){
             this.parentBubble.alpha = 0.8
             this.parentBubble.beginFill(model.current_root.color);
-            this.parentBubble.lineStyle({width: 2})
-            this.parentBubble.drawCircle(model.current_root.body.position[0], model.current_root.body.position[1], model.current_root.radius)
-            this.parentBubble.endFill()
+            this.parentBubble.lineStyle({width: 2});
+            this.parentBubble.drawCircle(model.current_root.body.position[0], model.current_root.body.position[1], model.current_root.radius);
+            this.parentBubble.endFill();
         }
         if(model.current_root.children != undefined){
             for (let bubble of model.current_root.children) {
                 this.bubbles.beginFill(bubble.color);
-                this.bubbles.lineStyle({width: 2})
-                this.bubbles.drawCircle(bubble.body.position[0], bubble.body.position[1], bubble.radius)
-                this.bubbles.endFill()
+                this.bubbles.lineStyle({width: 2});
+                this.bubbles.drawCircle(bubble.body.position[0], bubble.body.position[1], bubble.radius);
+                this.bubbles.endFill();
 
                 if(bubble.children != undefined){
                     for (let child of bubble.children) {
                         this.bubbles.beginFill(bubble.color);
-                        this.bubbles.lineStyle({width: 2})
-                        this.bubbles.drawCircle(child.body.position[0], child.body.position[1], child.radius)
-                        this.bubbles.endFill()
+                        this.bubbles.lineStyle({width: 2});
+                        this.bubbles.drawCircle(child.body.position[0], child.body.position[1], child.radius);
+                        this.bubbles.endFill();
+                    }
+                }
+            }
+        }
+    }
+
+    // only here for debug purposes
+    drawBoxes(){
+        this.boxes.clear();
+        this.boxes.alpha = 0.8;
+        if(model.current_root.children != undefined){
+            for (let bubble of model.current_root.children) {
+                for(let shape of bubble.body.shapes){
+                    if(shape instanceof p2.Box){
+                        let box = shape as p2.Box;
+                        this.boxes.beginFill(bubble.color);
+                        this.boxes.lineStyle({width: 2});
+                        this.boxes.angle = box.angle;
+                        this.boxes.drawRect(bubble.body.position[0] + box.position[0] - box.width / 2, bubble.body.position[1] + box.position[1] - box.height / 2, box.width, box.height);
+                        /*console.log(bubble.body.position[0] + box.position[0]);
+                        console.log(bubble.body.position[1] + box.position[1]);
+                        console.log(box.width);
+                        console.log(box.height);
+                        console.log("---------");*/
+                        this.boxes.endFill();
+                    }
+                }
+                
+
+                if(bubble.children != undefined){
+                    for (let child of bubble.children) {
+                        this.boxes.beginFill(bubble.color);
+                        this.boxes.lineStyle({width: 2});
+                        //this.boxes.drawRect(child.body.position[0], child.body.position[1], child.radius);
+                        this.boxes.endFill();
                     }
                 }
             }
@@ -132,7 +171,7 @@ export class View{
                 }
                 else if(child.body.position[0] + (box.width / 2) > this.width){
                     let new_x = child.body.position[0] - ((child.body.position[0] + (box.width / 2) - this.width));
-                    text.position.set(new_x, child.body.position[1])
+                    text.position.set(new_x, child.body.position[1]);
                 }
                 this.label_list.push(text);
                 this.app.stage.addChild(text);
@@ -154,7 +193,7 @@ export class View{
                     console.log(model.parseCsv(evt.target!.result))
                 }
                 reader.onerror = function (evt) {
-                    console.log("Error reading the file")
+                    console.log("Error reading the file");
                 }
             }
         };

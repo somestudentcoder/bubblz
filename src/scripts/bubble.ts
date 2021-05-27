@@ -69,7 +69,7 @@ export class Bubble{
             width = 1;
         }
         if(!extraLength){
-            extraLength = 3;
+            extraLength = 5;
         }
       
         const theta = 2 * Math.PI / sides;
