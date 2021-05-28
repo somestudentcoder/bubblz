@@ -48,7 +48,7 @@ export class Model{
     {
         this.calculateWeight(root);
         this.root_bubble = this.createRootBubble(root);
-        view.current_root = this.root_bubble;
+        this.setNewRoot(this.root_bubble);
     }
 
     getNewID(){

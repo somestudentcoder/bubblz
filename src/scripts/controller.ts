@@ -23,7 +23,7 @@ export class Controller{
                 view.viewport.snapZoom({removeOnComplete: true, height: view.viewport.worldScreenHeight * size_ratio, center: new PIXI.Point(bubble.body.position[0], bubble.body.position[1]), time: 1200, removeOnInterrupt: true});
                 view.zoom_factor *= size_ratio;
                 model.setNewRoot(bubble);
-                view.drawBubblz();
+                //view.drawBubblz();
                 return;
             }
         }
