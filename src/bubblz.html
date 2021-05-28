@@ -1,17 +1,82 @@
 <!DOCTYPE html>
 <html>
-    <meta charset="utf-8"> 
-    <head>
-        <title>Bubblz</title>
-        <!--<link rel="icon" type="image/ico" href="favicon.ico"/>-->
-        <link rel= "stylesheet" href="css/bubblz.css">
-        <div id = "header"></div>
+<meta charset="utf-8">
+<head>
+    <title>Bubblz</title>
+    <!--<link rel="icon" type="image/ico" href="favicon.ico"/>-->
+    <link rel= "stylesheet" href="css/bubblz.css">
+    <div id = "header"></div>
 
-    </head>
-    <body>
-        <h1>Bubblz</h1>
-        <button class="button button1" id="load-file-button">Load new File</button>
-        <canvas id="main_canvas"></canvas>
-        <!--<script src="bundle.js"></script>-->
-    </body>
+</head>
+<body>
+<h1>Bubblz</h1>
+<button class="button button1" id="load-file-button">Load new File</button>
+<button class="button button2" id ="open-pop-up">Create Tree</button>
+<div id="pop-up" class="hover_bkgr_fricc">
+    <span class="helper"></span>
+
+    <div>
+        <div id="popup-close-button" class="popupCloseButton">&times;</div>
+        <h1>Create Tree</h1>
+        <div class="inputContainer">
+            <label class="inputLabel" for="depth">Depth:</label>
+
+            <input class="inputField" type="number" id="depth" name="depth"
+                   min="1" max="100">
+        </div>
+        <div class="inputContainer">
+            <label class="inputLabel" for="children">Children per node:</label>
+
+            <input class="inputField" type="number" id="children" name="children"
+                   min="1" max="100">
+        </div>
+        <h2>Property 1</h2>
+        <div class="inputContainer">
+            <label class="propertyLabelName" for="property1-name">Name:</label>
+            <input class="propertyName" type="text" id="property1-name" name="property name"
+                   min="1" max="100">
+
+            <label class="propertyLabelMin" for="property1-min">Min:</label>
+            <input class="propertyMin" type="number" id="property1-min" name="property min"
+                   min="1" max="100">
+
+            <label class="propertyLabelMax" for="property1-max">Max:</label>
+            <input class="propertyMax" type="number" id="property1-max" name="property max"
+                   min="1" max="100">
+        </div>
+        <h2>Property 2</h2>
+        <div class="inputContainer">
+            <label class="propertyLabelName" for="property2-name">Name:</label>
+            <input class="propertyName" type="text" id="property2-name" name="property name"
+                   min="1" max="100">
+
+            <label class="propertyLabelMin" for="property2-min">Min:</label>
+            <input class="propertyMin" type="number" id="property2-min" name="property min"
+                   min="1" max="100">
+
+            <label class="propertyLabelMax" for="property2-max">Max:</label>
+            <input class="propertyMax" type="number" id="property2-max" name="property max"
+                   min="1" max="100">
+        </div>
+        <h2>Property 3</h2>
+        <div class="inputContainer">
+            <label class="propertyLabelName" for="property3-name">Name:</label>
+            <input class="propertyName" type="text" id="property3-name" name="property name"
+                   min="1" max="100">
+
+            <label class="propertyLabelMin" for="property3-min">Min:</label>
+            <input class="propertyMin" type="number" id="property3-min" name="property min"
+                   min="1" max="100">
+
+            <label class="propertyLabelMax" for="property3-max">Max:</label>
+            <input class="propertyMax" type="number" id="property3-max" name="property max"
+                   min="1" max="100">
+        </div>
+        <button id="submit-button" class="submitButton">Submit</button>
+    </div>
+</div>
+<canvas id="main_canvas"></canvas>
+<!--<script src="bundle.js"></script>-->
+
+</body>
 </html>
