@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import { Viewport } from 'pixi-viewport';
+import { ClickEventData, Viewport } from 'pixi-viewport';
 import p2 = require('p2');
 import { Bubble } from "./bubble";
 import {RootElement} from "./rootElement";
@@ -16,11 +16,13 @@ export class View{
     public viewport: Viewport;
 
     public bubbles: PIXI.Graphics;
+    public boxes: PIXI.Graphics;
+    public parentBubble: PIXI.Graphics;
     public labels: PIXI.Graphics;
 
     public label_list: Array<PIXI.Text> = [] as Array<PIXI.Text>;
 
-    public current_root: Bubble = {} as Bubble;
+    public zoom_factor: number = 1;
 
 
     constructor(){
@@ -38,6 +40,8 @@ export class View{
         //init stage & text containers
         //this.stage = new PIXI.Container();
         this.bubbles = new PIXI.Graphics();
+        this.boxes = new PIXI.Graphics();
+        this.parentBubble = new PIXI.Graphics();
         this.labels = new PIXI.Graphics();
 
         this.viewport = new Viewport({
@@ -48,10 +52,21 @@ export class View{
             interaction: this.app.renderer.plugins.interaction
         });
         
-        //this.viewport.on('clicked', (e) => controller.onClick(e.data.global.x, e.data.global.y));
+        this.app.stage.addChild(this.viewport);
+
+        this.viewport
+        .bounce()
+        .drag()
+        .wheel()
+        .pinch()
+        .decelerate()
+        .clamp({ direction: 'all' })
+        .clampZoom({maxWidth: this.width, maxHeight:this.height});
+
+        this.viewport.on('clicked', (e: ClickEventData) => controller.userClick(e.world.x, e.world.y));
 
         document.getElementById("load-file-button")!.onclick = (e) => {
-            this.loadFileButton()
+            this.loadFileButton();
         }
 
         document.getElementById("open-pop-up")!.onclick = (e) => {
@@ -63,62 +78,110 @@ export class View{
         }
     }
 
-    animate()
-    {
+    animate(){
         model.world.step(model.timeStep);
 
         //view.app.stage.removeChildren()
-        view.drawCircles()
-        view.drawLabels()
+        view.drawBubbles();
+        view.drawLabels();
+        //view.drawBoxes();
     }
 
-    startBubblz()
-    {
-        this.app.stage.addChild(this.bubbles)
-        setInterval(this.animate, 30 * model.timeStep);
+    startBubblz(){
+        this.app.stage.addChild(this.bubbles);
+        this.app.stage.addChild(this.parentBubble);
+        this.app.stage.addChild(this.boxes);
+        setInterval(this.animate, 1000 * model.timeStep);
         
     }
 
-    drawCircles() {
+    drawBubbles() {
         //this.app.stage.addChild(this.bubbles)
         this.bubbles.clear();
-        if(this.current_root.children != undefined){
-            for (let bubble of this.current_root.children) {
-                this.bubbles.beginFill(0xFFFFFF);
-                this.bubbles.lineStyle({width: 2})
-                this.bubbles.drawCircle(bubble.body.position[0], bubble.body.position[1], bubble.radius)
-                this.bubbles.endFill()
+        this.parentBubble.clear();
+        if(model.current_root != model.root_bubble){
+            this.parentBubble.alpha = 0.8
+            this.parentBubble.beginFill(model.current_root.color);
+            this.parentBubble.lineStyle({width: 2});
+            this.parentBubble.drawCircle(model.current_root.body.position[0], model.current_root.body.position[1], model.current_root.radius);
+            this.parentBubble.endFill();
+        }
+        if(model.current_root.children != undefined){
+            for (let bubble of model.current_root.children) {
+                this.bubbles.beginFill(bubble.color);
+                this.bubbles.lineStyle({width: 2});
+                this.bubbles.drawCircle(bubble.body.position[0], bubble.body.position[1], bubble.radius);
+                this.bubbles.endFill();
+
+                if(bubble.children != undefined){
+                    for (let child of bubble.children) {
+                        this.bubbles.beginFill(bubble.color);
+                        this.bubbles.lineStyle({width: 2});
+                        this.bubbles.drawCircle(child.body.position[0], child.body.position[1], child.radius);
+                        this.bubbles.endFill();
+                    }
+                }
             }
         }
     }
 
-    drawLabels()
-    {
+    // only here for debug purposes
+    drawBoxes(){
+        this.boxes.clear();
+        this.boxes.alpha = 0.8;
+        if(model.current_root.children != undefined){
+            for (let bubble of model.current_root.children) {
+                for(let shape of bubble.body.shapes){
+                    if(shape instanceof p2.Box){
+                        let box = shape as p2.Box;
+                        this.boxes.beginFill(bubble.color);
+                        this.boxes.lineStyle({width: 2});
+                        this.boxes.angle = box.angle;
+                        this.boxes.drawRect(bubble.body.position[0] + box.position[0] - box.width / 2, bubble.body.position[1] + box.position[1] - box.height / 2, box.width, box.height);
+                        /*console.log(bubble.body.position[0] + box.position[0]);
+                        console.log(bubble.body.position[1] + box.position[1]);
+                        console.log(box.width);
+                        console.log(box.height);
+                        console.log("---------");*/
+                        this.boxes.endFill();
+                    }
+                }
+                
+
+                if(bubble.children != undefined){
+                    for (let child of bubble.children) {
+                        this.boxes.beginFill(bubble.color);
+                        this.boxes.lineStyle({width: 2});
+                        //this.boxes.drawRect(child.body.position[0], child.body.position[1], child.radius);
+                        this.boxes.endFill();
+                    }
+                }
+            }
+        }
+    }
+
+    drawLabels(){
         //cleanup
-        for(let text of this.label_list)
-        {
+        for(let text of this.label_list){
             this.app.stage.removeChild(text);
             text.destroy;
         }
         this.label_list = [];
 
-        if(this.current_root.children != undefined)
-        {
-            this.current_root.children.forEach(child => {
+        if(model.current_root.children != undefined){
+            model.current_root.children.forEach(child => {
                 let text = new PIXI.Text(child.name, {fill: 0x000000,  stroke: 0x000000, strokeThickness: (0.5), fontSize: 40});
                 text.anchor.set(0.5);
                 //text.resolution = 2 * (1/this.zoom_factor);
                 text.position.set(child.body.position[0], child.body.position[1]);
                 let box = text.getLocalBounds(new PIXI.Rectangle);
-                if(child.body.position[0] - (box.width / 2) < 0)
-                {
+                if(child.body.position[0] - (box.width / 2) < 0){
                     let new_x = child.body.position[0] + ((child.body.position[0] - (box.width / 2)) * -1);
                     text.position.set(new_x, child.body.position[1])
                 }
-                else if(child.body.position[0] + (box.width / 2) > this.width)
-                {
+                else if(child.body.position[0] + (box.width / 2) > this.width){
                     let new_x = child.body.position[0] - ((child.body.position[0] + (box.width / 2) - this.width));
-                    text.position.set(new_x, child.body.position[1])
+                    text.position.set(new_x, child.body.position[1]);
                 }
                 this.label_list.push(text);
                 this.app.stage.addChild(text);
@@ -126,8 +189,7 @@ export class View{
         }
     }
 
-    loadFileButton()
-    {
+    loadFileButton(){
         let input = document.createElement('input');
         input.type = 'file';
         input.onchange = _ => {
@@ -141,7 +203,7 @@ export class View{
                     model.newRoot(<HierarchyNode<any>>model.parseCsv(evt.target!.result))
                 }
                 reader.onerror = function (evt) {
-                    console.log("Error reading the file")
+                    console.log("Error reading the file");
                 }
             }
         };
