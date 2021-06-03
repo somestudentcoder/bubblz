@@ -3,6 +3,7 @@ import {csv, json} from "d3-fetch";
 import {hierarchy, HierarchyNode, stratify} from "d3-hierarchy";
 import { Bubble } from "./bubble";
 import * as p2 from 'p2';
+import {RootElement} from "./rootElement";
 
 
 
@@ -42,6 +43,13 @@ export class Model{
         })
     }
 
+
+    newRoot(root: HierarchyNode<any>)
+    {
+        this.calculateWeight(root);
+        this.root_bubble = this.createRootBubble(root);
+        this.setNewRoot(this.root_bubble);
+    }
 
     getNewID(){
         let id = this.currentID;
@@ -210,5 +218,44 @@ export class Model{
     parseJson(fileContent: any) {
         let parsingRes = JSON.parse(fileContent);
         return hierarchy(parsingRes);
+    }
+
+    createTreeCsv(depth: number, width: number, root_elements: RootElement[])
+    {
+        let root: any = {}
+        root.name = "Node_0"
+        root.children = []
+        let current_array = [root];
+        let current_array_next = [];
+        let node_counter = 1;
+        for (let i = 0; i < depth; i++)
+        {
+            for (let current_node of current_array) {
+                for (let j = 0; j < width; j++) {
+                    let new_node: any = {};
+                    node_counter++;
+                    new_node.name = "Node_" + node_counter;
+                    if(i == depth - 1)
+                    {
+                        for (let element of root_elements)
+                        {
+                            new_node[element.name_] = element.getNumber();
+                        }
+                        new_node.weight = 1;
+                        //console.log(current_node)
+                    }
+                    else
+                    {
+                        new_node.children = [];
+                    }
+                    current_array_next.push(new_node)
+                    current_node.children.push(new_node)
+                }
+            }
+            current_array = current_array_next;
+            current_array_next = []
+        }
+        console.log(root)
+        return hierarchy(root);
     }
 }

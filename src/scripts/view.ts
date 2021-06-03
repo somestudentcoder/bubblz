@@ -2,6 +2,8 @@ import * as PIXI from 'pixi.js';
 import { ClickEventData, Viewport } from 'pixi-viewport';
 import p2 = require('p2');
 import { Bubble } from "./bubble";
+import {RootElement} from "./rootElement";
+import {HierarchyNode} from "d3-hierarchy";
 
 const MAXRADIUS: number = 800;
 
@@ -65,6 +67,14 @@ export class View{
 
         document.getElementById("load-file-button")!.onclick = (e) => {
             this.loadFileButton();
+        }
+
+        document.getElementById("open-pop-up")!.onclick = (e) => {
+            this.openPopup()
+        }
+
+        document.getElementById("submit-button")!.onclick = (e) => {
+            this.submitTreeForm()
         }
     }
 
@@ -183,14 +193,14 @@ export class View{
         let input = document.createElement('input');
         input.type = 'file';
         input.onchange = _ => {
-            // you can use this method to get file and perform respective operations
             let files = Array.from(input.files!);
             let file = files[0];
-            if(file.type == "text/csv") {
+            console.log(file.type)
+            if(file.type == "application/vnd.ms-excel") {
                 var reader = new FileReader();
                 reader.readAsText(file, "UTF-8");
                 reader.onload = function (evt) {
-                    console.log(model.parseCsv(evt.target!.result))
+                    model.newRoot(<HierarchyNode<any>>model.parseCsv(evt.target!.result))
                 }
                 reader.onerror = function (evt) {
                     console.log("Error reading the file");
@@ -198,5 +208,36 @@ export class View{
             }
         };
         input.click();
+        //console.log(model.createTreeCsv(3,3, [new RootElement("cost", 1, 100)]))
     }
+
+    submitTreeForm()
+    {
+        let depth = (<HTMLInputElement> document.getElementById("depth")!).value;
+        let children = (<HTMLInputElement> document.getElementById("children")!).value;
+        let property_list = [];
+        for (let i = 1; i <= 2; i++) {
+            let property_name = (<HTMLInputElement>document.getElementById("property" + i.toString() +"-name")!).value;
+            let property_min = (<HTMLInputElement>document.getElementById("property" + i.toString() +"-min")!).value;
+            let property_max = (<HTMLInputElement>document.getElementById("property" + i.toString() +"-max")!).value;
+            if(!(property_name.length == 0 || property_min.length == 0  || property_max.length == 0))
+            {
+                property_list.push(new RootElement(property_name, +property_min, +property_max))
+            }
+        }
+        model.newRoot(model.createTreeCsv(+depth, +children, property_list));
+        document.getElementById("pop-up")!.style.display = "none";
+    }
+
+    openPopup()
+    {
+        document.getElementById('pop-up')!.style.display = "block";
+        /*document.getElementById('pop-up')!.onclick = (e) => {
+            document.getElementById('pop-up')!.style.display = "none";
+        };*/
+        document.getElementById('popup-close-button')!.onclick = () => {
+            document.getElementById('pop-up')!.style.display = "none";
+        };
+    }
+
 }
