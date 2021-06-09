@@ -27,14 +27,20 @@ export class Controller{
                 return;
             }
         }
-        let parent = model.current_root.parent;
-        //let size_ratio = this.calculateZoomFactor(parent)
-        //view.viewport.snapZoom({removeOnComplete: true, height: view.viewport.worldScreenHeight * size_ratio, center: new PIXI.Point(parent.body.position[0], parent.body.position[1]), time: 1200, removeOnInterrupt: true});
-        //view.zoom_factor *= size_ratio;
-        // if(Object.keys(parent).length !== 0){
-        //     model.setNewRoot(parent);
-        // }
-        return;
+        if(model.current_root.isRoot)
+        {
+            return;
+        }
+        else
+        {
+            let parent = model.current_root.parent;
+            let size_ratio = this.calculateZoomFactor(parent)
+            view.viewport.snapZoom({removeOnComplete: true, height: view.viewport.worldScreenHeight * size_ratio, center: new PIXI.Point(parent.body.position[0], parent.body.position[1]), time: 1200, removeOnInterrupt: true});
+            view.zoom_factor *= size_ratio;
+            console.log(size_ratio)
+            model.setNewRoot(parent);
+            return;
+        }
     }
 
     calculateZoomFactor(bubble: Bubble){
