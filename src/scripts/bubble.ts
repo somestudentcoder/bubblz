@@ -14,6 +14,7 @@ export class Bubble{
     public weight: number = 0;
     public depth: number = 0;
     public height: number = 0;
+    public isRoot: Boolean = false;
 
 
     constructor(){
@@ -23,12 +24,26 @@ export class Bubble{
     static from(node: HierarchyNode<any>, parent_param?: Bubble){
         let bubble = new Bubble();
         bubble.id = model.getNewID();
+
         if(parent_param){
             bubble.parent = parent_param;
         }
+        else
+        {
+            bubble.isRoot = true;
+        }
+
         bubble.weight = node.data.weight;
-        bubble.radius = bubble.weight * 5;
-        //bubble.radius = Math.sqrt(node.data.weight / Math.PI) * 50;
+        
+        if(bubble.isRoot)
+        {
+            bubble.radius = view.width / 2;
+        }
+        else
+        {
+            bubble.radius = bubble.weight * 5;
+        }
+
         bubble.body = new p2.Body({
             mass:5,
             position:[view.width / 2 + bubble.id, view.height / 2]

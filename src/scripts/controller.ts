@@ -14,7 +14,7 @@ export class Controller{
                 if(bubble.children.length == 0){
                     return;
                 }
-                console.log(bubble.id)
+                //console.log(bubble.id)
                 //bubble.color = 0x000000;
                 // if (bubble.polygon_parent == model.root_polygon) {
                 //     view.active_parent_index = model.current_root_polygon.polygon_children.indexOf(polygon);
@@ -27,14 +27,19 @@ export class Controller{
                 return;
             }
         }
-        let parent = model.current_root.parent;
-        let size_ratio = this.calculateZoomFactor(parent)
-        view.viewport.snapZoom({removeOnComplete: true, height: view.viewport.worldScreenHeight * size_ratio, center: new PIXI.Point(parent.body.position[0], parent.body.position[1]), time: 1200, removeOnInterrupt: true});
-        view.zoom_factor *= size_ratio;
-        if(Object.keys(parent).length !== 0){
-            model.setNewRoot(parent);
+        if(model.current_root.isRoot)
+        {
+            return;
         }
-        return;
+        else
+        {
+            let parent = model.current_root.parent;
+            let size_ratio = this.calculateZoomFactor(parent)
+            view.viewport.snapZoom({removeOnComplete: true, height: view.viewport.worldScreenHeight * size_ratio, center: new PIXI.Point(parent.body.position[0], parent.body.position[1]), time: 1200, removeOnInterrupt: true});
+            view.zoom_factor *= size_ratio;
+            model.setNewRoot(parent);
+            return;
+        }
     }
 
     calculateZoomFactor(bubble: Bubble){
