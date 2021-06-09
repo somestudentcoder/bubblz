@@ -44,8 +44,7 @@ export class Model{
     }
 
 
-    newRoot(root: HierarchyNode<any>)
-    {
+    newRoot(root: HierarchyNode<any>){
         this.calculateWeight(root);
         this.root_bubble = this.createRootBubble(root);
         this.setNewRoot(this.root_bubble);
@@ -59,27 +58,41 @@ export class Model{
 
 
     setNewRoot(new_root: Bubble){
-      // remove all bodies from world
-      for(let body of model.world.bodies){
-        model.world.removeBody(body);
-      }
-      // add walls back in
-      model.createWalls();
-      // add bodies to world
-      for(let bubble of new_root.children){
+        // remove all bodies from world
+        for(let body of model.world.bodies){
+            model.world.removeBody(body);
+        }
+        // add walls back in
+        model.createWalls();
+
+        let x_parent = 0;
+        let y_parent = 0;
+        let x_child = 0;
+        // add bodies to world
+        for(let bubble of new_root.children){
+            x_parent += bubble.radius;
+            y_parent = bubble.radius;
+            bubble.body.position[0] = x_parent;
+            bubble.body.position[1] = y_parent;
+            x_parent += bubble.radius;
             for(let bubble_shape of bubble.body.shapes){
 
                 // set phyiscs of first layer
                 if(bubble_shape == bubble.body.shapes[0]){
                     this.setParentFilledCollision(bubble_shape);
-                    
                 }
                 else{
                     this.setParentHollowCollision(bubble_shape);
                 }
                 
                 // set physics of second layer
+                x_child = bubble.body.position[0] - bubble.radius;
                 for(let child of bubble.children){
+                    x_child += child.radius;
+                    child.body.position[0] = x_child;
+                    child.body.position[1] = bubble.body.position[1];
+                    x_child += child.radius;
+
                     for(let child_shape of child.body.shapes){
                         if(child_shape == child.body.shapes[0]){
                             
@@ -94,11 +107,11 @@ export class Model{
             }
             this.world.addBody(bubble.body);
         }
-      console.log("old root");
-      console.log(this.current_root);
-      console.log("new root");
-      console.log(new_root)
-      this.current_root = new_root;
+        console.log("old root");
+        console.log(this.current_root);
+        console.log("new root");
+        console.log(new_root)
+        this.current_root = new_root;
     }
 
     setNoCollision(shape:p2.Shape){

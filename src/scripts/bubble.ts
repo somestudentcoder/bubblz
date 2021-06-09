@@ -36,7 +36,7 @@ export class Bubble{
         
         // create shapes
         bubble.body.addShape(new p2.Circle({ radius: bubble.radius }));
-        //bubble.buildHollowCircle(bubble.radius);
+        bubble.buildHollowCircle(bubble.radius);
 
         bubble.name = node.data.name;
         bubble.depth = node.depth;
@@ -63,10 +63,10 @@ export class Bubble{
 
     buildHollowCircle(radius: number, sides?: number, width?: number, extraLength?: number) {
         if(!sides){
-            sides = 10;
+            sides = 30;
         }
         if(!width){
-            width = 1;
+            width = 2;
         }
         if(!extraLength){
             extraLength = 5;
