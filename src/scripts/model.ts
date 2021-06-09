@@ -69,12 +69,29 @@ export class Model{
         let y_parent = 0;
         let x_child = 0;
         // add bodies to world
+        // add current root
+        if(Object.keys(this.current_root).length != 0 && new_root != this.current_root.parent){
+            for(let shape of new_root.body.shapes){
+                if(shape == new_root.body.shapes[0]){
+                    this.setNoCollision(shape);
+                }
+                else{
+                    this.setBoundaryCollision(shape);
+                }
+            }
+            this.world.addBody(new_root.body);
+        }
+        
+
         for(let bubble of new_root.children){
-            x_parent += bubble.radius;
-            y_parent = bubble.radius;
-            bubble.body.position[0] = x_parent;
-            bubble.body.position[1] = y_parent;
-            x_parent += bubble.radius;
+            if(new_root == this.current_root.parent || Object.keys(this.current_root).length == 0){
+                x_parent += bubble.radius;
+                y_parent = bubble.radius;
+                bubble.body.position[0] = x_parent;
+                bubble.body.position[1] = y_parent;
+                x_parent += bubble.radius;
+            }
+            
             for(let bubble_shape of bubble.body.shapes){
 
                 // set phyiscs of first layer
@@ -121,7 +138,7 @@ export class Model{
 
     setBoundaryCollision(shape: p2.Shape){
         shape.collisionGroup = model.BOUNDARY_GROUP;
-        shape.collisionMask = model.PARENT_FILLED_GROUP | model.CHILD_GROUP;
+        shape.collisionMask = model.PARENT_FILLED_GROUP | model.BOUNDARY_GROUP;
     }
 
     setParentHollowCollision(shape: p2.Shape){
@@ -136,7 +153,7 @@ export class Model{
 
     setChildCollision(shape: p2.Shape){
         shape.collisionGroup = model.CHILD_GROUP;
-        shape.collisionMask = model.PARENT_HOLLOW_GROUP | model.CHILD_GROUP | model.BOUNDARY_GROUP;
+        shape.collisionMask = model.PARENT_HOLLOW_GROUP | model.CHILD_GROUP;
     }
 
     createWalls(){
