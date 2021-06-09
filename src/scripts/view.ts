@@ -81,22 +81,19 @@ export class View{
     animate(){
         model.world.step(model.timeStep);
 
-        //view.app.stage.removeChildren()
         view.drawBubbles();
         view.drawLabels();
         //view.drawBoxes();
     }
 
     startBubblz(){
-        this.app.stage.addChild(this.bubbles);
-        this.app.stage.addChild(this.parentBubble);
-        this.app.stage.addChild(this.boxes);
+        this.viewport.addChild(this.bubbles);
+        this.viewport.addChild(this.parentBubble);
+        this.viewport.addChild(this.boxes);
         setInterval(this.animate, 1000 * model.timeStep);
-        
     }
 
     drawBubbles() {
-        //this.app.stage.addChild(this.bubbles)
         this.bubbles.clear();
         this.parentBubble.clear();
         if(model.current_root != model.root_bubble){
@@ -163,7 +160,7 @@ export class View{
     drawLabels(){
         //cleanup
         for(let text of this.label_list){
-            this.app.stage.removeChild(text);
+            this.viewport.removeChild(text);
             text.destroy;
         }
         this.label_list = [];
@@ -184,7 +181,7 @@ export class View{
                     text.position.set(new_x, child.body.position[1]);
                 }
                 this.label_list.push(text);
-                this.app.stage.addChild(text);
+                this.viewport.addChild(text);
             });
         }
     }

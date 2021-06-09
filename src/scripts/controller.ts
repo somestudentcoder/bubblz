@@ -31,9 +31,9 @@ export class Controller{
         //let size_ratio = this.calculateZoomFactor(parent)
         //view.viewport.snapZoom({removeOnComplete: true, height: view.viewport.worldScreenHeight * size_ratio, center: new PIXI.Point(parent.body.position[0], parent.body.position[1]), time: 1200, removeOnInterrupt: true});
         //view.zoom_factor *= size_ratio;
-        if(Object.keys(parent).length !== 0){
-            model.setNewRoot(parent);
-        }
+        // if(Object.keys(parent).length !== 0){
+        //     model.setNewRoot(parent);
+        // }
         return;
     }
 
@@ -42,21 +42,7 @@ export class Controller{
         let xmax = bubble.body.position[0] + bubble.radius;
         let ymin = bubble.body.position[1] - bubble.radius;
         let ymax = bubble.body.position[1] + bubble.radius;
-        // for(let p of bubble.points){
-        //   if (p.x < xmin){
-        //     xmin = p.x;
-        //   }
-        //   else if(p.x > xmax){
-        //     xmax = p.x;
-        //   }
-    
-        //   if (p.y < ymin){
-        //     ymin = p.y;
-        //   }
-        //   else if(p.y > ymax){
-        //     ymax = p.y;
-        //   }
-        // }
+
         let x_ratio = (xmax - xmin) / view.viewport.worldScreenWidth;
         let y_ratio = (ymax - ymin) / view.viewport.worldScreenHeight;
         let larger_ratio = x_ratio >= y_ratio ? x_ratio : y_ratio;
