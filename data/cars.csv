@@ -1,10 +1,18 @@
 name,parent,weight
 world,,
 Germany,world,
+United Kingdom,world,
 Japan,world,
+France,world,
+Sweden,world,
 USA,world,
 Italy,world,
 Korea,world,
+Jaguar,United Kingdom,
+McLaren,United Kingdom,
+Aston Martin,United Kingdom,
+Koenigsegg,Sweden,
+Volvo,Sweden,
 BMW,Germany,
 Mercedes,Germany,
 Audi,Germany,
@@ -24,6 +32,19 @@ Fiat,Italy,
 Bugatti,Italy,
 Kia,Korea,
 Hyundai,Korea,
+Citroen,France,
+Peugeot,France,
+Renault,France,
+DB 11,Aston Martin,1
+Vantage,Aston Martin,1
+Vanquish,Aston Martin,1
+E-Pace,Jaguar,1
+F-Pace,Jaguar,1
+F-Type,Jaguar,1
+I-Pace,Jaguar,1
+720S,McLaren,1
+Senna,McLaren,1
+570S,McLaren,1
 1 Series,BMW,1
 2 Series,BMW,1
 3 Series,BMW,1
@@ -100,3 +121,23 @@ i20,Hyundai,1
 i30,Hyundai,1
 Kona,Hyundai,1
 Nexo,Hyundai,1
+C3,Citroen,1
+C4,Citroen,1
+C5,Citroen,1
+DS,Citroen,1
+108,Peugeot,1
+208,Peugeot,1
+508,Peugeot,1
+Captur,Renault,1
+Espace,Renault,1
+Twingo,Renault,1
+Twizy,Renault,1
+Zoe,Renault,1
+Clio,Renault,1
+Regera,Koenigsegg,1
+Jesko,Koenigsegg,1
+Gemera,Koenigsegg,1
+V60,Volvo,1
+V90,Volvo,1
+S60,Volvo,1
+S90,Volvo,1

@@ -14,11 +14,7 @@ export class Controller{
                 if(bubble.children.length == 0){
                     return;
                 }
-                //console.log(bubble.id)
-                //bubble.color = 0x000000;
-                // if (bubble.polygon_parent == model.root_polygon) {
-                //     view.active_parent_index = model.current_root_polygon.polygon_children.indexOf(polygon);
-                // }
+
                 let size_ratio = this.calculateZoomFactor(bubble)
                 view.viewport.snapZoom({removeOnComplete: true, height: view.viewport.worldScreenHeight * size_ratio, center: new PIXI.Point(bubble.body.position[0], bubble.body.position[1]), time: 1200, removeOnInterrupt: true});
                 view.zoom_factor *= size_ratio;
@@ -29,12 +25,13 @@ export class Controller{
         }
         if(model.current_root == model.root_bubble)
         {
+            view.zoom_factor = 1;
             return;
         }
         else
         {
             let parent = model.current_root.parent;
-            let size_ratio = this.calculateZoomFactor(parent)
+            let size_ratio = this.calculateZoomFactor(parent);
             view.viewport.snapZoom({removeOnComplete: true, height: view.viewport.worldScreenHeight * size_ratio, center: new PIXI.Point(parent.body.position[0], parent.body.position[1]), time: 1200, removeOnInterrupt: true});
             view.zoom_factor *= size_ratio;
             model.setNewRoot(parent);
@@ -43,6 +40,10 @@ export class Controller{
     }
 
     calculateZoomFactor(bubble: Bubble){
+        if(bubble.isRoot)
+        {
+            return 1 / view.zoom_factor;
+        }
         let xmin = bubble.body.position[0] - bubble.radius;
         let xmax = bubble.body.position[0] + bubble.radius;
         let ymin = bubble.body.position[1] - bubble.radius;
@@ -51,6 +52,7 @@ export class Controller{
         let x_ratio = (xmax - xmin) / view.viewport.worldScreenWidth;
         let y_ratio = (ymax - ymin) / view.viewport.worldScreenHeight;
         let larger_ratio = x_ratio >= y_ratio ? x_ratio : y_ratio;
+
         return larger_ratio;
     }
 }
