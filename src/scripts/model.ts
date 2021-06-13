@@ -80,7 +80,6 @@ export class Model{
                 }
             }
             
-            
             new_root.body.mass = 0;
             new_root.body.type = p2.Body.STATIC;
             new_root.body.velocity = [0, 0];
@@ -90,13 +89,16 @@ export class Model{
         
 
         for(let bubble of new_root.children){
-            if(new_root == this.current_root.parent || Object.keys(this.current_root).length == 0){
+            if(Object.keys(this.current_root).length == 0){
                 x_parent += bubble.radius;
                 y_parent = bubble.radius;
                 bubble.body.position[0] = x_parent;
                 bubble.body.position[1] = y_parent;
                 x_parent += bubble.radius;
             }
+            bubble.body.mass = bubble.weight;
+            bubble.body.type = p2.Body.DYNAMIC;
+            bubble.body.updateMassProperties();
             
             for(let bubble_shape of bubble.body.shapes){
 

@@ -29,7 +29,7 @@ export class Bubble{
         }
 
         bubble.weight = node.data.weight;
-        bubble.radius = bubble == model.root_bubble ? view.width / 2 : bubble.weight * 5;
+        bubble.radius = bubble == model.root_bubble ? view.width / 2 : bubble.weight * 10;
 
         bubble.body = new p2.Body({
             mass: bubble.weight,
