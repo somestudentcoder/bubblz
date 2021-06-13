@@ -14,7 +14,6 @@ export class Bubble{
     public weight: number = 0;
     public depth: number = 0;
     public height: number = 0;
-    public isRoot: Boolean = false;
 
 
     constructor(){
@@ -28,24 +27,12 @@ export class Bubble{
         if(parent_param){
             bubble.parent = parent_param;
         }
-        else
-        {
-            bubble.isRoot = true;
-        }
 
         bubble.weight = node.data.weight;
-        
-        if(bubble.isRoot)
-        {
-            bubble.radius = view.width / 2;
-        }
-        else
-        {
-            bubble.radius = bubble.weight * 5;
-        }
+        bubble.radius = bubble == model.root_bubble ? view.width / 2 : bubble.weight * 5;
 
         bubble.body = new p2.Body({
-            mass:5,
+            mass: bubble.weight,
             position:[view.width / 2 + bubble.id, view.height / 2]
         });
         

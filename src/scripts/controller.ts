@@ -27,7 +27,7 @@ export class Controller{
                 return;
             }
         }
-        if(model.current_root.isRoot)
+        if(model.current_root == model.root_bubble)
         {
             return;
         }
