@@ -158,18 +158,23 @@ export class View{
     }
 
     drawLabels(){
-        //cleanup
-        for(let text of this.label_list){
-            this.viewport.removeChild(text);
-            text.destroy;
-        }
-        this.label_list = [];
-
+        let list: Array<PIXI.Text> = [] as Array<PIXI.Text>;
         if(model.current_root.children != undefined){
             model.current_root.children.forEach(child => {
-                let text = new PIXI.Text(child.name, {fill: 0x000000,  stroke: 0x000000, strokeThickness: (0.5), fontSize: 40});
+                let text;
+                text = this.label_list.pop();
+                if(text != undefined)
+                {
+                    this.viewport.removeChild(text);
+                    text.text = child.name;
+                    text.style = {fill: 0x000000,  stroke: 0x000000, strokeThickness: 0.3, fontSize: Math.floor((20 + child.weight * 2)* this.zoom_factor) +3};
+                }
+                else
+                {
+                    text = new PIXI.Text(child.name, {fill: 0x000000,  stroke: 0x000000, strokeThickness: 0.5, fontSize: Math.floor((20 + child.weight * 2)* this.zoom_factor) +3});                    
+                }
                 text.anchor.set(0.5);
-                //text.resolution = 2 * (1/this.zoom_factor);
+                text.resolution = 2 * (1/this.zoom_factor);
                 text.position.set(child.body.position[0], child.body.position[1]);
                 let box = text.getLocalBounds(new PIXI.Rectangle);
                 if(child.body.position[0] - (box.width / 2) < 0){
@@ -180,10 +185,14 @@ export class View{
                     let new_x = child.body.position[0] - ((child.body.position[0] + (box.width / 2) - this.width));
                     text.position.set(new_x, child.body.position[1]);
                 }
-                this.label_list.push(text);
+                list.push(text);
                 this.viewport.addChild(text);
             });
         }
+        for(let text of this.label_list){
+            this.viewport.removeChild(text);
+        }
+        this.label_list = list;
     }
 
     loadFileButton(){
