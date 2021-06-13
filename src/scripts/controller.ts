@@ -23,7 +23,7 @@ export class Controller{
                 return;
             }
         }
-        if(model.current_root.isRoot)
+        if(model.current_root == model.root_bubble)
         {
             view.zoom_factor = 1;
             return;
@@ -40,7 +40,7 @@ export class Controller{
     }
 
     calculateZoomFactor(bubble: Bubble){
-        if(bubble.isRoot)
+        if(bubble == model.root_bubble)
         {
             return 1 / view.zoom_factor;
         }

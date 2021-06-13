@@ -79,6 +79,12 @@ export class Model{
                     this.setBoundaryCollision(shape);
                 }
             }
+            
+            
+            new_root.body.mass = 0;
+            new_root.body.type = p2.Body.STATIC;
+            new_root.body.velocity = [0, 0];
+            new_root.body.updateMassProperties();
             this.world.addBody(new_root.body);
         }
         
