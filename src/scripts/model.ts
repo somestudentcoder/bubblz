@@ -4,6 +4,9 @@ import {hierarchy, HierarchyNode, stratify} from "d3-hierarchy";
 import { Bubble } from "./bubble";
 import * as p2 from 'p2';
 import {RootElement} from "./rootElement";
+import {Controller} from "./controller";
+import {View} from "./view";
+import * as PIXI from "pixi.js";
 
 
 
@@ -20,34 +23,60 @@ export class Model{
     public world: p2.World = {} as p2.World;
     public current_root: Bubble = {} as Bubble;
 
-    constructor(){
+    constructor(node?: HierarchyNode<any>){
         this.world = new p2.World({
             gravity:[0, -9.82]
         });
         this.world.defaultContactMaterial.friction = 0.1;
         this.world.defaultContactMaterial.restitution = 0.7;
 
+        if (!node) {
+            csv('data/cars.csv')
+                .then((csvData) => {
+                    let root = stratify()
+                        .id(function (d: any = {}) {
+                            return d.name;
+                        })
+                        .parentId(function (d: any = {}) {
+                            return d.parent;
+                        })
+                        (csvData);
 
-        csv('data/cars.csv')
-        .then((csvData) => {
-          let root = stratify()
-            .id(function (d:any = {}) { return d.name; })
-            .parentId(function (d:any = {}) { return d.parent; })
-            (csvData);
-
-            this.calculateWeight(root);
-            this.root_bubble = this.createRootBubble(root);
+                    this.calculateWeight(root);
+                    this.root_bubble = this.createRootBubble(root);
+                    this.setNewRoot(this.root_bubble);
+                    console.log(root);
+                    console.log(this.root_bubble);
+                })
+        }
+        else
+        {
+            this.calculateWeight(node);
+            this.root_bubble = this.createRootBubble(node);
             this.setNewRoot(this.root_bubble);
-            console.log(root);
+            console.log(node);
             console.log(this.root_bubble);
-        })
+        }
     }
 
 
     newRoot(root: HierarchyNode<any>){
+        /*this.world = new p2.World({
+            gravity:[0, -9.82]
+        });
+        this.world.defaultContactMaterial.friction = 0.1;
+        this.world.defaultContactMaterial.restitution = 0.7;
+
+        this.currentID = 0;
         this.calculateWeight(root);
         this.root_bubble = this.createRootBubble(root);
+        this.current_root = this.root_bubble;
         this.setNewRoot(this.root_bubble);
+         */
+        model = new Model(root);
+        model.setNewRoot(model.root_bubble);
+        view.drawBubbles();
+        //model.setNewRoot(this.root_bubble);
     }
 
     getNewID(){
