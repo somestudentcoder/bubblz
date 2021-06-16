@@ -34,11 +34,9 @@ export class Bubble{
             
             let area_ratio = (this.AREA_FILL_PERCENT * bubble.weight) / bubble.parent.weight;
             if(Object.keys(parent_param.parent).length == 0){
-                console.log("1: " + node.data.name)
                 area_ratio *= view.width * view.height;
             }
             else{
-                console.log("2: " + node.data.name)
                 area_ratio *= bubble.parent.radius * bubble.parent.radius * Math.PI;
             }
             
