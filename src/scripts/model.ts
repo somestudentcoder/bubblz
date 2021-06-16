@@ -150,12 +150,17 @@ export class Model{
             this.world.addBody(bubble.body);
 
             // set physics of second layer
-            let x_child = bubble.body.position[0] - bubble.radius;
+            let i = 1;
             for(let child of bubble.children){
-                x_child += child.radius;
-                child.body.position[0] = x_child;
-                child.body.position[1] = bubble.body.position[1];
-                x_child += child.radius;
+                
+                let theta = 2 * Math.PI / bubble.children.length;
+                let radius = bubble.radius / 2;
+                let x = bubble.body.position[0] + radius * Math.sin(i  * theta);
+                let y = bubble.body.position[1] + -radius * Math.cos(i * theta);
+                i += 1;
+
+                child.body.position[0] = x;
+                child.body.position[1] = y;
 
                 for(let child_shape of child.body.shapes){
                     if(child_shape == child.body.shapes[0]){
