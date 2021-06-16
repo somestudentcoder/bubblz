@@ -164,7 +164,6 @@ export class View{
                 let text;
                 text = this.label_list.pop();
                 let font_size = child.radius / 3;
-                console.log(font_size);
                 if(text != undefined)
                 {
                     this.viewport.removeChild(text);
