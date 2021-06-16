@@ -68,7 +68,7 @@ export class Bubble{
             sides = 30;
         }
         if(!width){
-            width = 2;
+            width = 10;
         }
         if(!extraLength){
             extraLength = 5;
