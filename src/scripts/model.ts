@@ -85,6 +85,22 @@ export class Model{
         return id;
     }
 
+    placeToplevelBubbles(){
+        let x = 0;
+        let y = 0;
+        let max_y = 0;
+        for(let bubble of this.root_bubble.children){
+            if(x + 2 * bubble.radius >= view.width){
+                x = 0;
+                y += max_y;
+            }
+            bubble.body.position[0] = x + bubble.radius;
+            bubble.body.position[1] = y + bubble.radius;
+            max_y = 2 * bubble.radius > max_y ? 2 * bubble.radius : max_y;
+            x += 2 * bubble.radius;
+        }
+    }
+
 
     setNewRoot(new_root: Bubble){
         // remove all bodies from world
@@ -94,37 +110,29 @@ export class Model{
         // add walls back in
         model.createWalls();
 
-        let x_parent = 0;
-        let y_parent = 0;
-        let x_child = 0;
         // add bodies to world
         // add current root
-        if(Object.keys(this.current_root).length != 0 && new_root != this.current_root.parent){
-            for(let shape of new_root.body.shapes){
-                if(shape == new_root.body.shapes[0]){
-                    this.setNoCollision(shape);
-                }
-                else{
-                    this.setBoundaryCollision(shape);
-                }
+        for(let shape of new_root.body.shapes){
+            if(shape == new_root.body.shapes[0]){
+                this.setNoCollision(shape);
             }
-            
-            new_root.body.mass = 0;
-            new_root.body.type = p2.Body.STATIC;
-            new_root.body.velocity = [0, 0];
-            new_root.body.updateMassProperties();
-            this.world.addBody(new_root.body);
+            else{
+                this.setBoundaryCollision(shape);
+            }
         }
         
-
+        new_root.body.mass = 0;
+        new_root.body.type = p2.Body.STATIC;
+        new_root.body.velocity = [0, 0];
+        new_root.body.updateMassProperties();
+        this.world.addBody(new_root.body);
+        if(Object.keys(this.current_root).length == 0){
+            this.placeToplevelBubbles();
+        }
+        
         for(let bubble of new_root.children){
-            if(Object.keys(this.current_root).length == 0){
-                x_parent += bubble.radius;
-                y_parent = bubble.radius;
-                bubble.body.position[0] = x_parent;
-                bubble.body.position[1] = y_parent;
-                x_parent += bubble.radius;
-            }
+            //only happens on start up
+            
             bubble.body.mass = bubble.weight;
             bubble.body.type = p2.Body.DYNAMIC;
             bubble.body.updateMassProperties();
@@ -138,28 +146,28 @@ export class Model{
                 else{
                     this.setParentHollowCollision(bubble_shape);
                 }
-                
-                // set physics of second layer
-                x_child = bubble.body.position[0] - bubble.radius;
-                for(let child of bubble.children){
-                    x_child += child.radius;
-                    child.body.position[0] = x_child;
-                    child.body.position[1] = bubble.body.position[1];
-                    x_child += child.radius;
-
-                    for(let child_shape of child.body.shapes){
-                        if(child_shape == child.body.shapes[0]){
-                            
-                            this.setChildCollision(child_shape);
-                        }
-                        else{
-                            this.setNoCollision(child_shape);
-                        }
-                    }
-                    this.world.addBody(child.body);
-                }
             }
             this.world.addBody(bubble.body);
+
+            // set physics of second layer
+            let x_child = bubble.body.position[0] - bubble.radius;
+            for(let child of bubble.children){
+                x_child += child.radius;
+                child.body.position[0] = x_child;
+                child.body.position[1] = bubble.body.position[1];
+                x_child += child.radius;
+
+                for(let child_shape of child.body.shapes){
+                    if(child_shape == child.body.shapes[0]){
+                        
+                        this.setChildCollision(child_shape);
+                    }
+                    else{
+                        this.setNoCollision(child_shape);
+                    }
+                }
+                this.world.addBody(child.body);
+            }
         }
         console.log("old root");
         console.log(this.current_root);
