@@ -200,6 +200,7 @@ export class View{
         let input = document.createElement('input');
         input.type = 'file';
         input.onchange = _ => {
+            controller.calcSimilarity(model.root_bubble.children[1], model.root_bubble.children[3])
             let files = Array.from(input.files!);
             let file = files[0];
             console.log(file.type)

@@ -17,6 +17,7 @@ export class Bubble{
     public weight: number = 0;
     public depth: number = 0;
     public height: number = 0;
+    public data: number[] = [0,0,0]
 
 
     constructor(){
@@ -25,6 +26,8 @@ export class Bubble{
 
     static from(node: HierarchyNode<any>, parent_param?: Bubble){
         let bubble = new Bubble();
+
+        bubble.data = [+node.data.displacement, +node.data.horsepower, +node.data.kerb_weight];
         bubble.id = model.getNewID();
 
         bubble.weight = node.data.weight;
