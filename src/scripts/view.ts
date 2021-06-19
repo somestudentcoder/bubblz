@@ -89,7 +89,7 @@ export class View{
     startBubblz(){
         this.viewport.addChild(this.bubbles);
         this.viewport.addChild(this.parentBubble);
-        this.viewport.addChild(this.boxes);
+        //this.viewport.addChild(this.boxes);
         setInterval(this.animate, 1000 * model.timeStep);
     }
 
