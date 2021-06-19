@@ -1,8 +1,11 @@
 
 import {hierarchy, HierarchyNode, stratify} from "d3-hierarchy";
+import { pid } from "node:process";
 import * as p2 from 'p2';
 
 export class Bubble{
+
+    public static AREA_FILL_PERCENT: number = 0.45;
 
     public radius: number = 1;
     public color: number = 0xFFFFFF;
@@ -14,6 +17,7 @@ export class Bubble{
     public weight: number = 0;
     public depth: number = 0;
     public height: number = 0;
+    public data: number[] = [0,0,0]
 
 
     constructor(){
@@ -22,14 +26,28 @@ export class Bubble{
 
     static from(node: HierarchyNode<any>, parent_param?: Bubble){
         let bubble = new Bubble();
+
+        bubble.data = [+node.data.displacement, +node.data.horsepower, +node.data.kerb_weight];
         bubble.id = model.getNewID();
+
+        bubble.weight = node.data.weight;
 
         if(parent_param){
             bubble.parent = parent_param;
+            
+            let area_ratio = (this.AREA_FILL_PERCENT * bubble.weight) / bubble.parent.weight;
+            if(Object.keys(parent_param.parent).length == 0){
+                area_ratio *= view.width * view.height;
+            }
+            else{
+                area_ratio *= bubble.parent.radius * bubble.parent.radius * Math.PI;
+            }
+            
+            bubble.radius = Math.sqrt(area_ratio / Math.PI);
         }
-
-        bubble.weight = node.data.weight;
-        bubble.radius = bubble == model.root_bubble ? view.width / 2 : bubble.weight * 10;
+        else{
+            bubble.radius = view.width > view.height ? view.width / 2 : view.height / 2
+        }
 
         bubble.body = new p2.Body({
             mass: bubble.weight,

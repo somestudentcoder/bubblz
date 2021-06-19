@@ -1,6 +1,6 @@
 import { Bubble } from "./bubble";
 import * as PIXI from 'pixi.js';
-
+import * as math from "mathjs";
 export class Controller{
 
     constructor(){
@@ -54,5 +54,31 @@ export class Controller{
         let larger_ratio = x_ratio >= y_ratio ? x_ratio : y_ratio;
 
         return larger_ratio;
+    }
+
+    getSumLeaf(node: Bubble) : number[]
+    {
+        let total = [0,0,0]
+        if(node.children.length != 0) {
+            node.children.forEach(function (child: any) {
+                let prev = controller.getSumLeaf(child)
+                total = math.add(total, prev) as number[]
+            })
+            total = math.divide(total, node.children.length) as number[]
+        }
+        else
+        {
+            total = node.data
+        }
+        return total
+    }
+
+    calcSimilarity(node1: Bubble, node2: Bubble)
+    {
+        let prop_1 = this.getSumLeaf(node1)
+        let prop_2 = this.getSumLeaf(node2)//node2.properties
+        let cosing_sim = math.dot(prop_1, prop_2) / ((math.norm(prop_1) as number) * (math.norm(prop_2) as number))
+        console.log(cosing_sim)
+        return cosing_sim
     }
 }

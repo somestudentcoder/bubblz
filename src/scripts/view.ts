@@ -163,15 +163,16 @@ export class View{
             model.current_root.children.forEach(child => {
                 let text;
                 text = this.label_list.pop();
+                let font_size = child.radius / 3;
                 if(text != undefined)
                 {
                     this.viewport.removeChild(text);
                     text.text = child.name;
-                    text.style = {fill: 0x000000,  stroke: 0x000000, strokeThickness: 0.3, fontSize: Math.floor((20 + child.weight * 2)* this.zoom_factor) +3};
+                    text.style = {fill: 0x000000,  stroke: 0x000000, strokeThickness: 0.3, fontSize: font_size};
                 }
                 else
                 {
-                    text = new PIXI.Text(child.name, {fill: 0x000000,  stroke: 0x000000, strokeThickness: 0.5, fontSize: Math.floor((20 + child.weight * 2)* this.zoom_factor) +3});                    
+                    text = new PIXI.Text(child.name, {fill: 0x000000,  stroke: 0x000000, strokeThickness: 0.5, fontSize: font_size});                    
                 }
                 text.anchor.set(0.5);
                 text.resolution = 2 * (1/this.zoom_factor);
@@ -199,6 +200,7 @@ export class View{
         let input = document.createElement('input');
         input.type = 'file';
         input.onchange = _ => {
+            controller.calcSimilarity(model.root_bubble.children[1], model.root_bubble.children[3])
             let files = Array.from(input.files!);
             let file = files[0];
             console.log(file.type)
