@@ -261,8 +261,11 @@ export class View{
 
     submitTreeForm()
     {
-        let depth = (<HTMLInputElement> document.getElementById("depth")!).value;
-        let children = (<HTMLInputElement> document.getElementById("children")!).value;
+        let depth_min = (<HTMLInputElement> document.getElementById("depth_min")!).value;
+        let depth_max = (<HTMLInputElement> document.getElementById("depth_max")!).value;
+        let children_min = (<HTMLInputElement> document.getElementById("children_min")!).value;
+        let children_max = (<HTMLInputElement> document.getElementById("children_max")!).value;
+
         let property_list = [];
         for (let i = 1; i <= 2; i++) {
             let property_name = (<HTMLInputElement>document.getElementById("property" + i.toString() +"-name")!).value;
@@ -273,7 +276,7 @@ export class View{
                 property_list.push(new RootElement(property_name, +property_min, +property_max));
             }
         }
-        model.newRoot(model.createTreeCsv(+depth, +children, property_list));
+        model.newRoot(model.createTreeCsv(+depth_min, +depth_max, +children_min, +children_max, property_list));
         document.getElementById("pop-up")!.style.display = "none";
     }
 
