@@ -120,14 +120,20 @@ export class Controller{
             //standard
             case 0:
                 break;
-            //prop1 / prop2
+            //1 cluster
             case 1:
                 break;
-            //prop1 / prop3 
+            //2 cluster
             case 2:
                 break;
-            //prop2 / prop3
+            //3 cluster
             case 3:
+                break;
+            //4 cluster
+            case 4:
+                break;
+            //5 cluster
+            case 5: 
                 break;
         }
     }
