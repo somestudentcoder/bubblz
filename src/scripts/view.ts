@@ -122,7 +122,7 @@ export class View{
         this.bubbles.clear();
         this.parentBubble.clear();
         if(model.current_root != model.root_bubble){
-            this.parentBubble.alpha = 0.8
+            this.parentBubble.alpha = 0.8;
             this.parentBubble.beginFill(model.current_root.color);
             this.parentBubble.lineStyle({width: 2});
             this.parentBubble.drawCircle(model.current_root.body.position[0], model.current_root.body.position[1], model.current_root.radius);
@@ -189,14 +189,12 @@ export class View{
                 let text;
                 text = this.label_list.pop();
                 let font_size = child.radius / 3;
-                if(text != undefined)
-                {
+                if(text != undefined){
                     this.viewport.removeChild(text);
                     text.text = child.name;
                     text.style = {fill: 0x000000,  stroke: 0x000000, strokeThickness: 0.3, fontSize: font_size};
                 }
-                else
-                {
+                else{
                     text = new PIXI.Text(child.name, {fill: 0x000000,  stroke: 0x000000, strokeThickness: 0.5, fontSize: font_size});                    
                 }
                 text.anchor.set(0.5);
@@ -233,7 +231,7 @@ export class View{
                 var reader = new FileReader();
                 reader.readAsText(file, "UTF-8");
                 reader.onload = function (evt) {
-                    model.newRoot(<HierarchyNode<any>>model.parseCsv(evt.target!.result))
+                    model.newRoot(<HierarchyNode<any>>model.parseCsv(evt.target!.result));
                 }
                 reader.onerror = function (evt) {
                     console.log("Error reading the file");
@@ -255,7 +253,7 @@ export class View{
             let property_max = (<HTMLInputElement>document.getElementById("property" + i.toString() +"-max")!).value;
             if(!(property_name.length == 0 || property_min.length == 0  || property_max.length == 0))
             {
-                property_list.push(new RootElement(property_name, +property_min, +property_max))
+                property_list.push(new RootElement(property_name, +property_min, +property_max));
             }
         }
         model.newRoot(model.createTreeCsv(+depth, +children, property_list));

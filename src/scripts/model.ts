@@ -101,6 +101,23 @@ export class Model{
         }
     }
 
+    setSprings(new_root: Bubble){
+        for(let bubble_a of new_root.children){
+            for(let bubble_b of new_root.children){
+                if(bubble_a != bubble_b){
+                    let similarity = controller.calcSimilarity(bubble_a, bubble_b, 3);
+                    console.log("similarity: " + similarity);
+                    let spring = new p2.LinearSpring(bubble_a.body, bubble_b.body, {
+                        stiffness: 1,
+                        restLength: 1,
+                        damping: 10
+                    });
+                    this.world.addSpring(spring);
+                }
+            }
+        }
+    }
+
 
     setNewRoot(new_root: Bubble){
         // remove all bodies from world
@@ -173,7 +190,9 @@ export class Model{
                 }
                 this.world.addBody(child.body);
             }
+            //this.setSprings(bubble);
         }
+        this.setSprings(new_root);
         console.log("old root");
         console.log(this.current_root);
         console.log("new root");

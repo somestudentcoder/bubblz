@@ -7,6 +7,7 @@ export class Bubble{
 
     public static AREA_FILL_PERCENT: number = 0.43;
 
+
     public radius: number = 1;
     public color: number = 0xFFFFFF;
     public id: number = -1;
@@ -17,7 +18,7 @@ export class Bubble{
     public weight: number = 0;
     public depth: number = 0;
     public height: number = 0;
-    public data: number[] = [0,0,0]
+    public data: number[] = [0, 0, 0];
 
 
     constructor(){
