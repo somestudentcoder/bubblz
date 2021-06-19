@@ -22,10 +22,11 @@ export class Model{
     public timeStep: number = 1 / 30;
     public world: p2.World = {} as p2.World;
     public current_root: Bubble = {} as Bubble;
+    public attraction_clusters: number = 0;
 
     constructor(node?: HierarchyNode<any>){
         this.world = new p2.World({
-            gravity:[0, -9.82]
+            gravity:[0, 0]
         });
         this.world.defaultContactMaterial.friction = 0.1;
         this.world.defaultContactMaterial.restitution = 0.7;
@@ -102,17 +103,44 @@ export class Model{
     }
 
     setSprings(new_root: Bubble){
-        for(let bubble_a of new_root.children){
-            for(let bubble_b of new_root.children){
+        let min_children = new_root.children[0].children.length;
+        let max_children = new_root.children[0].children.length;
+        for(let bubble of new_root.children){
+            min_children = Math.min(min_children, bubble.children.length);
+            max_children = Math.max(max_children, bubble.children.length);
+        }
+        let group_size = (max_children - min_children) / this.attraction_clusters;
+
+        for(let a = 0; a < new_root.children.length; ++a){
+            let bubble_a = new_root.children[a];
+            let group_id_a = Math.floor((bubble_a.children.length - min_children) / (group_size + 0.00001));
+
+            for(let b = a + 1; b < new_root.children.length; ++b){
+                let bubble_b = new_root.children[b];
+                let group_id_b = Math.floor((bubble_b.children.length - min_children) / (group_size + 0.00001));
+
                 if(bubble_a != bubble_b){
-                    let similarity = controller.calcSimilarity(bubble_a, bubble_b, 3);
-                    console.log("similarity: " + similarity);
-                    let spring = new p2.LinearSpring(bubble_a.body, bubble_b.body, {
-                        stiffness: 0.1,
-                        restLength: bubble_a.radius + bubble_b.radius,
-                        damping: 1
-                    });
-                    this.world.addSpring(spring);
+                    if(group_id_a == group_id_b){
+                        console.log(bubble_a.name + " | " + bubble_b.name);
+                        console.log("group_ids: " + group_id_a + " | " + group_id_b);
+                        let spring = new p2.LinearSpring(bubble_a.body, bubble_b.body, {
+                            stiffness: (bubble_a.radius + bubble_b.radius) / 50,
+                            restLength: (bubble_a.radius + bubble_b.radius),
+                            damping: 1,
+                        });
+                        this.world.addSpring(spring);
+                    }
+                    else{
+                        console.log(bubble_a.name + " | " + bubble_b.name);
+                        console.log("repulsion: " + group_id_a + " | " + group_id_b);
+                        let spring = new p2.LinearSpring(bubble_a.body, bubble_b.body, {
+                            stiffness: 2,
+                            restLength: (bubble_a.radius + bubble_b.radius) * 4,
+                            damping: 1,
+                        });
+                        this.world.addSpring(spring);
+                    }
+                    
                 }
             }
         }
@@ -123,6 +151,9 @@ export class Model{
         // remove all bodies from world
         for(let body of model.world.bodies){
             model.world.removeBody(body);
+        }
+        for(let spring of model.world.springs){
+            model.world.removeSpring(spring);
         }
         // add walls back in
         model.createWalls();
@@ -192,7 +223,9 @@ export class Model{
             }
             //this.setSprings(bubble);
         }
-        this.setSprings(new_root);
+        if(this.attraction_clusters > 0){
+            this.setSprings(new_root);
+        }
         console.log("old root");
         console.log(this.current_root);
         console.log("new root");

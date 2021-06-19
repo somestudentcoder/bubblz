@@ -70,8 +70,7 @@ export class Controller{
         return total;
     }
 
-    calcSimilarity(node1: Bubble, node2: Bubble, properties: number)
-    {
+    calcSimilarity(node1: Bubble, node2: Bubble, properties: number){
         let prop_1 = this.getSumLeaf(node1)
         let prop_2 = this.getSumLeaf(node2) //node2.properties
         // if(properties == 3)
@@ -94,10 +93,8 @@ export class Controller{
         return cosing_sim
     }
 
-    setColorScheme(index: number)
-    {
-        switch(index)
-        {
+    setColorScheme(index: number){
+        switch(index){
             //standard
             case 0:
                 break;
@@ -113,35 +110,18 @@ export class Controller{
         }
     }
 
-    setAttractionScheme(index: number)
-    {
-        switch(index)
-        {
-            //standard
-            case 0:
-                break;
-            //1 cluster
-            case 1:
-                break;
-            //2 cluster
-            case 2:
-                break;
-            //3 cluster
-            case 3:
-                break;
-            //4 cluster
-            case 4:
-                break;
-            //5 cluster
-            case 5: 
-                break;
+    setAttractionScheme(index: number){
+        for(let spring of model.world.springs){
+            model.world.removeSpring(spring);
+        }
+        model.attraction_clusters = index;
+        if(index > 0){
+            model.setSprings(model.current_root);
         }
     }
 
-    setGravityScheme(index: number)
-    {
-        switch(index)
-        {
+    setGravityScheme(index: number){
+        switch(index){
             //standard
             case 0:
                 break;
@@ -155,5 +135,6 @@ export class Controller{
             case 3:
                 break;
         }
+        model.world.gravity = [0, 30];
     }
 }

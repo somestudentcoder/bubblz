@@ -41,18 +41,17 @@ export class Bubble{
         +node.data.prop1 ? bubble.data = [+node.data.prop1, +node.data.prop2, +node.data.prop3] : bubble.data = [0,0,0];
 
         bubble.weight = node.data.weight;
-
+        let area_ratio = 0;
         if(parent_param){
             bubble.parent = parent_param;
             
-            let area_ratio = (this.AREA_FILL_PERCENT * bubble.weight) / bubble.parent.weight;
+            area_ratio = (this.AREA_FILL_PERCENT * bubble.weight) / bubble.parent.weight;
             if(Object.keys(parent_param.parent).length == 0){
                 area_ratio *= view.width * view.height;
             }
             else{
                 area_ratio *= bubble.parent.radius * bubble.parent.radius * Math.PI;
             }
-            
             bubble.radius = Math.sqrt(area_ratio / Math.PI);
         }
         else{
@@ -60,7 +59,7 @@ export class Bubble{
         }
 
         bubble.body = new p2.Body({
-            mass: bubble.weight,
+            mass: Math.floor(Math.sqrt(area_ratio / 300)),
             position:[view.width / 2 + bubble.id, view.height / 2]
         });
         
