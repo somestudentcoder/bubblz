@@ -65,9 +65,9 @@ export class View{
 
         this.viewport.on('clicked', (e: ClickEventData) => controller.userClick(e.world.x, e.world.y));
 
-        document.getElementById("load-file-button")!.onclick = (e) => {
-            this.loadFileButton();
-        }
+        // document.getElementById("load-file-button")!.onclick = (e) => {
+        //     this.loadFileButton();
+        // }
 
         document.getElementById("open-pop-up")!.onclick = (e) => {
             this.openPopup()
@@ -76,6 +76,31 @@ export class View{
         document.getElementById("submit-button")!.onclick = (e) => {
             this.submitTreeForm()
         }
+
+        document.getElementById("colordropbtn")!.onclick = (e) => {
+            document.getElementById("colordropdown")!.classList.toggle("show");
+        }
+
+        document.getElementById("attractiondropbtn")!.onclick = (e) => {
+            document.getElementById("attractiondropdown")!.classList.toggle("show");
+        }
+
+        document.getElementById("gravitydropbtn")!.onclick = (e) => {
+            document.getElementById("gravitydropdown")!.classList.toggle("show");
+        }
+
+        window.addEventListener("click", function(e:MouseEvent) {
+            if (!(e.target! as Element).matches('.dropbtn')) {
+              var dropdowns = document.getElementsByClassName("dropdown-content");
+              var i;
+              for (i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                  openDropdown.classList.remove('show');
+                }
+              }
+            }
+          })
     }
 
     animate(){
@@ -200,7 +225,7 @@ export class View{
         let input = document.createElement('input');
         input.type = 'file';
         input.onchange = _ => {
-            controller.calcSimilarity(model.root_bubble.children[1], model.root_bubble.children[3])
+            //controller.calcSimilarity(model.root_bubble.children[1], model.root_bubble.children[3])
             let files = Array.from(input.files!);
             let file = files[0];
             console.log(file.type)
@@ -247,5 +272,4 @@ export class View{
             document.getElementById('pop-up')!.style.display = "none";
         };
     }
-
 }

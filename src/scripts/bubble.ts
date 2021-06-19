@@ -5,7 +5,7 @@ import * as p2 from 'p2';
 
 export class Bubble{
 
-    public static AREA_FILL_PERCENT: number = 0.45;
+    public static AREA_FILL_PERCENT: number = 0.43;
 
     public radius: number = 1;
     public color: number = 0xFFFFFF;
@@ -27,7 +27,10 @@ export class Bubble{
     static from(node: HierarchyNode<any>, parent_param?: Bubble){
         let bubble = new Bubble();
 
-        bubble.data = [+node.data.displacement, +node.data.horsepower, +node.data.kerb_weight];
+        +node.data.displacement ?
+        bubble.data = [+node.data.displacement, +node.data.horsepower, +node.data.kerb_weight] :
+        bubble.data = [+node.data.prop1, +node.data.prop2, +node.data.prop3];
+
         bubble.id = model.getNewID();
 
         bubble.weight = node.data.weight;

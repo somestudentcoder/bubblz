@@ -73,12 +73,84 @@ export class Controller{
         return total
     }
 
-    calcSimilarity(node1: Bubble, node2: Bubble)
+    calcSimilarity(node1: Bubble, node2: Bubble, properties: number)
     {
         let prop_1 = this.getSumLeaf(node1)
-        let prop_2 = this.getSumLeaf(node2)//node2.properties
+        let prop_2 = this.getSumLeaf(node2) //node2.properties
+        if(properties == 3)
+        {
+            prop_1.splice(3, 1)
+            prop_2.splice(3, 1)
+        }
+        else if(properties == 4)
+        {
+            prop_1.splice(2, 1)
+            prop_2.splice(2, 1)
+        }
+        else
+        {
+            prop_1.splice(1, 1)
+            prop_2.splice(1, 1)
+        }
         let cosing_sim = math.dot(prop_1, prop_2) / ((math.norm(prop_1) as number) * (math.norm(prop_2) as number))
         console.log(cosing_sim)
         return cosing_sim
+    }
+
+    setColorScheme(index: number)
+    {
+        switch(index)
+        {
+            //standard
+            case 0:
+                break;
+            //prop1 / prop2
+            case 1:
+                break;
+            //prop1 / prop3 
+            case 2:
+                break;
+            //prop2 / prop3
+            case 3:
+                break;
+        }
+    }
+
+    setAttractionScheme(index: number)
+    {
+        switch(index)
+        {
+            //standard
+            case 0:
+                break;
+            //prop1 / prop2
+            case 1:
+                break;
+            //prop1 / prop3 
+            case 2:
+                break;
+            //prop2 / prop3
+            case 3:
+                break;
+        }
+    }
+
+    setGravityScheme(index: number)
+    {
+        switch(index)
+        {
+            //standard
+            case 0:
+                break;
+            //prop1 / prop2
+            case 1:
+                break;
+            //prop1 / prop3 
+            case 2:
+                break;
+            //prop2 / prop3
+            case 3:
+                break;
+        }
     }
 }
