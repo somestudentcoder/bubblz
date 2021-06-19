@@ -6,7 +6,7 @@ import * as chroma from 'chroma-js';
 
 export class Bubble{
 
-    public static AREA_FILL_PERCENT: number = 0.43;
+    public static AREA_FILL_PERCENT: number = 0.40;
 
 
     public radius: number = 1;

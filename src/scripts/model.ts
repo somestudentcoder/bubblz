@@ -326,7 +326,7 @@ export class Model{
         root.children = []
         let current_array = [root];
         let current_array_next = [];
-        let node_counter = 1;
+        let node_counter = 0;
         for (let i = 0; i < depth; i++)
         {
             for (let current_node of current_array) {
