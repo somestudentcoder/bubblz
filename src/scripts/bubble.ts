@@ -38,7 +38,7 @@ export class Bubble{
 
         +node.data.displacement ?
         bubble.data = [+node.data.displacement, +node.data.horsepower, +node.data.kerb_weight] :
-        bubble.data = [+node.data.prop1, +node.data.prop2, +node.data.prop3];
+        +node.data.prop1 ? bubble.data = [+node.data.prop1, +node.data.prop2, +node.data.prop3] : bubble.data = [0,0,0];
 
         bubble.weight = node.data.weight;
 
