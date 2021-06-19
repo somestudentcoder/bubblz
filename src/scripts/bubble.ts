@@ -2,6 +2,7 @@
 import {hierarchy, HierarchyNode, stratify} from "d3-hierarchy";
 import { pid } from "node:process";
 import * as p2 from 'p2';
+import * as chroma from 'chroma-js';
 
 export class Bubble{
 
@@ -18,18 +19,23 @@ export class Bubble{
     public depth: number = 0;
     public height: number = 0;
     public data: number[] = [0, 0, 0];
+    static x_scale:chroma.Scale = chroma.scale(['#ff0000', '#ff2100', '#ff3200', '#ff4000', '#ff4b00', 
+    '#ff5600', '#ff6000', '#ff6900', '#ff7300', '#ff7c00', '#ff8500', '#ff8e00', '#ff9700', 
+    '#ffa100', '#ffaa00', '#ffb300', '#ffbd00', '#ffc700', '#ffd000', '#ffda00', '#ffe500', 
+    '#ffef00', '#fffa00', '#f8ff01', '#ecff09', '#e0fd15', '#d5fb21', '#cbf72c', '#c2f337', 
+    '#baee42', '#b2e84c', '#ace157', '#a6d961', '#a2d06b', '#9ec676', '#9abc80', '#96b18b', 
+    '#92a596', '#8e98a2', '#898aae', '#837bba', '#7b6bc7', '#6f5ad4', '#6046e2', '#472ef0', 
+    '#0000ff']);;
 
 
     constructor(){
-        
+
     }
 
     static from(node: HierarchyNode<any>, parent_param?: Bubble){
         let bubble = new Bubble();
 
         bubble.data = [+node.data.displacement, +node.data.horsepower, +node.data.kerb_weight];
-        bubble.id = model.getNewID();
-
         bubble.weight = node.data.weight;
 
         if(parent_param){
@@ -57,6 +63,8 @@ export class Bubble{
         // create shapes
         bubble.body.addShape(new p2.Circle({ radius: bubble.radius }));
         bubble.buildHollowCircle(bubble.radius);
+
+        bubble.id = model.getNewID();
 
         bubble.name = node.data.name;
         bubble.depth = node.depth;

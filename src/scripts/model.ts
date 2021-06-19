@@ -108,9 +108,9 @@ export class Model{
                     let similarity = controller.calcSimilarity(bubble_a, bubble_b);
                     console.log("similarity: " + similarity);
                     let spring = new p2.LinearSpring(bubble_a.body, bubble_b.body, {
-                        stiffness: 1,
-                        restLength: 1,
-                        damping: 10
+                        stiffness: 0.1,
+                        restLength: bubble_a.radius + bubble_b.radius,
+                        damping: 1
                     });
                     this.world.addSpring(spring);
                 }
