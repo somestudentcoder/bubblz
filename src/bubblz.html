@@ -10,8 +10,41 @@
 </head>
 <body>
 <h1>Bubblz</h1>
-<button class="button button1" id="load-file-button">Load new File</button>
+<!-- <button class="button button1" id="load-file-button">Load new File</button> -->
 <button class="button button2" id ="open-pop-up">Create Tree</button>
+
+<div class ="dropdowns">
+       <div class="dropdown">
+              <button id="colordropbtn" class="dropbtn">Color</button>
+              <div id="colordropdown" class="dropdown-content">
+                <a onclick="controller.setColorScheme(0)" href="#">Aesthetic</a>
+                <a onclick="controller.setColorScheme(1)" href="#">Link 2</a>
+                <a onclick="controller.setColorScheme(2)" href="#">Link 3</a>
+                <a onclick="controller.setColorScheme(3)" href="#">Link 4</a>
+              </div>
+       </div>
+       
+       <div class="dropdown">
+              <button id="attractiondropbtn" class="dropbtn">Attraction</button>
+              <div id="attractiondropdown" class="dropdown-content">
+                <a onclick="controller.setAttractionScheme(0)" href="#">None</a>
+                <a onclick="controller.setAttractionScheme(1)" href="#">Link 2</a>
+                <a onclick="controller.setAttractionScheme(2)" href="#">Link 3</a>
+                <a onclick="controller.setAttractionScheme(3)" href="#">Link 4</a>
+              </div>
+       </div> 
+       
+       <div class="dropdown">
+              <button id="gravitydropbtn" class="dropbtn">Gravity</button>
+              <div id="gravitydropdown" class="dropdown-content">
+                <a onclick="controller.setGravityScheme(0)" href="#">None</a>
+                <a onclick="controller.setGravityScheme(1)" href="#">Link 2</a>
+                <a onclick="controller.setGravityScheme(2)" href="#">Link 3</a>
+                <a onclick="controller.setGravityScheme(3)" href="#">Link 4</a>
+              </div>
+       </div> 
+</div>
+
 <div id="pop-up" class="hover_bkgr_fricc">
     <span class="helper"></span>
 

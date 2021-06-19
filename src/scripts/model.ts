@@ -105,7 +105,7 @@ export class Model{
         for(let bubble_a of new_root.children){
             for(let bubble_b of new_root.children){
                 if(bubble_a != bubble_b){
-                    let similarity = controller.calcSimilarity(bubble_a, bubble_b);
+                    let similarity = controller.calcSimilarity(bubble_a, bubble_b, 3);
                     console.log("similarity: " + similarity);
                     let spring = new p2.LinearSpring(bubble_a.body, bubble_b.body, {
                         stiffness: 0.1,
