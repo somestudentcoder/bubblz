@@ -5,7 +5,7 @@ import * as p2 from 'p2';
 
 export class Bubble{
 
-    public static AREA_FILL_PERCENT: number = 0.45;
+    public static AREA_FILL_PERCENT: number = 0.40;
 
     public radius: number = 1;
     public color: number = 0xFFFFFF;
@@ -17,7 +17,7 @@ export class Bubble{
     public weight: number = 0;
     public depth: number = 0;
     public height: number = 0;
-    public data: number[] = [0,0,0]
+    public data: number[] = [0, 0, 0];
 
 
     constructor(){

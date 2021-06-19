@@ -40,8 +40,7 @@ export class Controller{
     }
 
     calculateZoomFactor(bubble: Bubble){
-        if(bubble == model.root_bubble)
-        {
+        if(bubble == model.root_bubble){
             return 1 / view.zoom_factor;
         }
         let xmin = bubble.body.position[0] - bubble.radius;
@@ -56,29 +55,25 @@ export class Controller{
         return larger_ratio;
     }
 
-    getSumLeaf(node: Bubble) : number[]
-    {
-        let total = [0,0,0]
+    getSumLeaf(node: Bubble) : number[]{
+        let total = [0, 0, 0];
         if(node.children.length != 0) {
             node.children.forEach(function (child: any) {
-                let prev = controller.getSumLeaf(child)
-                total = math.add(total, prev) as number[]
+                let prev = controller.getSumLeaf(child);
+                total = math.add(total, prev) as number[];
             })
-            total = math.divide(total, node.children.length) as number[]
+            total = math.divide(total, node.children.length) as number[];
         }
-        else
-        {
-            total = node.data
+        else{
+            total = node.data;
         }
-        return total
+        return total;
     }
 
-    calcSimilarity(node1: Bubble, node2: Bubble)
-    {
-        let prop_1 = this.getSumLeaf(node1)
-        let prop_2 = this.getSumLeaf(node2)//node2.properties
-        let cosing_sim = math.dot(prop_1, prop_2) / ((math.norm(prop_1) as number) * (math.norm(prop_2) as number))
-        console.log(cosing_sim)
-        return cosing_sim
+    calcSimilarity(node1: Bubble, node2: Bubble){
+        let prop_1 = this.getSumLeaf(node1);
+        let prop_2 = this.getSumLeaf(node2);//node2.properties
+        let cosing_sim = math.dot(prop_1, prop_2) / ((math.norm(prop_1) as number) * (math.norm(prop_2) as number));
+        return cosing_sim;
     }
 }
