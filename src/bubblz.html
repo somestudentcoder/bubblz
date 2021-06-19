@@ -54,15 +54,25 @@
         <div id="popup-close-button" class="popupCloseButton">&times;</div>
         <h1>Create Tree</h1>
         <div class="inputContainer">
-            <label class="inputLabel" for="depth">Depth:</label>
+            <label class="inputLabel" for="depth_min">Depth:</label>
 
-            <input class="inputField" type="number" id="depth" name="depth"
+            <label class="propertyLabelMin" for="depth_min">Min:</label>
+            <input class="propertyMin" type="number" id="depth_min" name="depth"
+                   min="1" max="100">
+
+            <label class="propertyLabelMax" for="depth_max">Max:</label>
+            <input class="propertyMax" type="number" id="depth_max" name="depth"
                    min="1" max="100">
         </div>
         <div class="inputContainer">
-            <label class="inputLabel" for="children">Children per node:</label>
+            <label class="inputLabel" for="children_min">Children per node:</label>
 
-            <input class="inputField" type="number" id="children" name="children"
+            <label class="propertyLabelMin" for="children_min">Min:</label>
+            <input class="propertyMin" type="number" id="children_min" name="children"
+                   min="1" max="100">
+
+            <label class="propertyLabelMax" for="children_max">Max:</label>
+            <input class="propertyMax" type="number" id="children_max" name="children"
                    min="1" max="100">
         </div>
         <h2>Property 1</h2>

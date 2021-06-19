@@ -7,6 +7,7 @@ import {RootElement} from "./rootElement";
 import {Controller} from "./controller";
 import {View} from "./view";
 import * as PIXI from "pixi.js";
+import * as math from "mathjs";
 
 
 
@@ -319,7 +320,7 @@ export class Model{
         return hierarchy(parsingRes);
     }
 
-    createTreeCsv(depth: number, width: number, root_elements: RootElement[])
+    createTreeCsv(depth_min: number, depth_max: number, width_min: number, width_max:number, root_elements: RootElement[])
     {
         let root: any = {}
         root.name = "Node_0"
@@ -327,14 +328,16 @@ export class Model{
         let current_array = [root];
         let current_array_next = [];
         let node_counter = 0;
-        for (let i = 0; i < depth; i++)
+        let random_depth = math.randomInt(depth_min, depth_max);
+        for (let i = 0; i < random_depth; i++)
         {
             for (let current_node of current_array) {
-                for (let j = 0; j < width; j++) {
+                let random_width = math.randomInt(width_min, width_max)
+                for (let j = 0; j < random_width; j++) {
                     let new_node: any = {};
                     node_counter++;
                     new_node.name = "Node_" + node_counter;
-                    if(i == depth - 1)
+                    if(i == random_depth - 1)
                     {
                         for (let element of root_elements)
                         {

@@ -80,7 +80,7 @@ canvas {
     display: inline-block;
     height: auto;
     max-width: 1000px;
-    min-height: 400px;
+    min-height: 100px;
     vertical-align: middle;
     width: 60%;
     position: relative;
@@ -125,13 +125,14 @@ canvas {
     width: 200px;
     text-align: left;
     font-size: 25px;
-    left: -250px;
+    left: -125px;
 }
 
 .inputContainer {
     display: flex;
     justify-content: center;
     align-items: flex-start;
+    height: 50px;
 }
 
 .propertyLabelName {
@@ -234,4 +235,5 @@ canvas {
   .dropdown-content a:hover {background-color: #ddd}
   
   /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
-  .show {display:block;} 
+  .show {display:block;}
+  .show {display:block;}
