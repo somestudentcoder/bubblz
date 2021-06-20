@@ -127,7 +127,7 @@ export class View{
         if(model.current_root != model.root_bubble){
             this.setColor(model.current_root);
 
-            this.parentBubble.alpha = 0.8;
+            this.parentBubble.alpha = 0.3;
             this.parentBubble.beginFill(model.current_root.color);
             this.parentBubble.lineStyle({width: 2});
             this.parentBubble.drawCircle(model.current_root.body.position[0], model.current_root.body.position[1], model.current_root.radius);
@@ -169,8 +169,9 @@ export class View{
                 node.color = chroma.mix(c1, c2).num();
                 break;
             case 1:
-                console.log("value: ", (node.data[0] - model.minProp1) / model.maxProp1);
-                console.log(node.data[0])
+                // console.log("value: ", (node.data[0] - model.minProp1) / model.maxProp1);
+                // console.log(node.data[0])
+                // console.log(model.maxProp1)
                 color = Bubble.x_scale((node.data[0] - model.minProp1) / model.maxProp1);
                 node.color = color.num();
                 break;
