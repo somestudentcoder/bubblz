@@ -46,9 +46,6 @@ export class Bubble{
         else if(+node.data.prop1)
         {
             bubble.data = [+node.data.prop1, +node.data.prop2, +node.data.prop3];
-            model.setMinMax(1, +node.data.prop1);
-            model.setMinMax(2, +node.data.prop2);
-            model.setMinMax(3, +node.data.prop3);
         }
         else
         {

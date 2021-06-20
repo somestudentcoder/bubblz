@@ -169,18 +169,19 @@ export class View{
                 node.color = chroma.mix(c1, c2).num();
                 break;
             case 1:
-                // console.log("value: ", (node.data[0] - model.minProp1) / model.maxProp1);
-                // console.log(node.data[0])
-                // console.log(model.maxProp1)
-                color = Bubble.x_scale((node.data[0] - model.minProp1) / model.maxProp1);
+                // console.log("value: ", (node.data[0] - model.minProp1) / (model.maxProp1 - model.minProp1));
+                // console.log("data",node.data[0])
+                // console.log("min",model.minProp1)             
+                // console.log("max",model.maxProp1)
+                color = Bubble.x_scale((node.data[0] - model.minProp1) / (model.maxProp1 - model.minProp1));
                 node.color = color.num();
                 break;
             case 2:
-                color = Bubble.x_scale((node.data[1] - model.minProp2) / model.maxProp2);
+                color = Bubble.x_scale((node.data[1] - model.minProp2) / (model.maxProp2 - model.minProp2));
                 node.color = color.num();
                 break;
             case 3:
-                color = Bubble.x_scale((node.data[2] - model.minProp3) / model.maxProp3);
+                color = Bubble.x_scale((node.data[2] - model.minProp3) / (model.maxProp3 - model.minProp3));
                 node.color = color.num();
                 break;
         }
@@ -291,7 +292,7 @@ export class View{
         let children_max = (<HTMLInputElement> document.getElementById("children_max")!).value;
 
         let property_list = [];
-        for (let i = 1; i <= 2; i++) {
+        for (let i = 1; i <= 3; i++) {
             let property_name = (<HTMLInputElement>document.getElementById("property" + i.toString() +"-name")!).value;
             let property_min = (<HTMLInputElement>document.getElementById("property" + i.toString() +"-min")!).value;
             let property_max = (<HTMLInputElement>document.getElementById("property" + i.toString() +"-max")!).value;
@@ -300,6 +301,7 @@ export class View{
                 property_list.push(new RootElement(property_name, +property_min, +property_max));
             }
         }
+        //model.resetMinMax();
         model.newRoot(model.createTreeCsv(+depth_min, +depth_max, +children_min, +children_max, property_list));
         document.getElementById("pop-up")!.style.display = "none";
     }
