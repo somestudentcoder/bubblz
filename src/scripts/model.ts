@@ -23,6 +23,13 @@ export class Model{
     public world: p2.World = {} as p2.World;
     public current_root: Bubble = {} as Bubble;
 
+    public minProp1: number = Infinity;
+    public maxProp1: number = 0;
+    public minProp2: number = Infinity;
+    public maxProp2: number = 0;
+    public minProp3: number = Infinity;
+    public maxProp3: number = 0;
+
     constructor(node?: HierarchyNode<any>){
         this.world = new p2.World({
             gravity:[0, -9.82]
@@ -356,5 +363,42 @@ export class Model{
         }
         console.log(root)
         return hierarchy(root);
+    }
+
+    setMinMax(property:number, value: number)
+    {
+        switch(property)
+        {
+            case 1:
+                if(this.maxProp1 < value)
+                {
+                    this.maxProp1 = value;
+                }
+                else if(this.minProp1 > value)
+                {
+                    this.minProp1 = value;
+                }
+                break;
+            case 2:
+                if(this.maxProp2 < value)
+                {
+                    this.maxProp2 = value;
+                }
+                else if(this.minProp2 > value)
+                {
+                    this.minProp2 = value;
+                }
+                break;
+            case 3:
+                if(this.maxProp3 < value)
+                {
+                    this.maxProp3 = value;
+                }
+                else if(this.minProp3 > value)
+                {
+                    this.minProp3 = value;
+                }
+                break;
+        }
     }
 }

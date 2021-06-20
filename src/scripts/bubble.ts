@@ -36,9 +36,25 @@ export class Bubble{
     static from(node: HierarchyNode<any>, parent_param?: Bubble){
         let bubble = new Bubble();
 
-        +node.data.displacement ?
-        bubble.data = [+node.data.displacement, +node.data.horsepower, +node.data.kerb_weight] :
-        +node.data.prop1 ? bubble.data = [+node.data.prop1, +node.data.prop2, +node.data.prop3] : bubble.data = [0,0,0];
+        if(+node.data.displacement)
+        {
+            bubble.data = [+node.data.displacement, +node.data.horsepower, +node.data.kerb_weight]
+            model.setMinMax(1, +node.data.displacement);
+            model.setMinMax(2, +node.data.horsepower);
+            model.setMinMax(3, +node.data.kerb_weight);
+        }
+        else if(+node.data.prop1)
+        {
+            bubble.data = [+node.data.prop1, +node.data.prop2, +node.data.prop3];
+            model.setMinMax(1, +node.data.prop1);
+            model.setMinMax(2, +node.data.prop2);
+            model.setMinMax(3, +node.data.prop3);
+        }
+        else
+        {
+            bubble.data = [0,0,0];
+        }
+       
 
         bubble.weight = node.data.weight;
 

@@ -96,19 +96,30 @@ export class Controller{
 
     setColorScheme(index: number)
     {
+        console.log("prop 1 min:", model.minProp1)
+        console.log("prop 1 max:", model.maxProp1)
+        console.log("prop 2 min:", model.minProp2)
+        console.log("prop 2 max:", model.maxProp2)
+        console.log("prop 3 min:", model.minProp3)
+        console.log("prop 3 max:", model.maxProp3)
+    
         switch(index)
         {
             //standard
             case 0:
+                view.color_selector = 0;
                 break;
             //prop1 / prop2
             case 1:
+                view.color_selector = 1;
                 break;
             //prop1 / prop3 
             case 2:
+                view.color_selector = 2;
                 break;
             //prop2 / prop3
             case 3:
+                view.color_selector = 3;
                 break;
         }
     }

@@ -25,6 +25,8 @@ export class View{
 
     public zoom_factor: number = 1;
 
+    public color_selector: number = 0;
+
 
     constructor(){
         //init pixi
@@ -122,12 +124,8 @@ export class View{
     drawBubbles() {
         this.bubbles.clear();
         this.parentBubble.clear();
-        let x_scale = Bubble.x_scale;
-        let y_scale = chroma.scale(['#000000', '#ffffff']);
         if(model.current_root != model.root_bubble){
-            let c1 = x_scale(model.current_root.body.position[0] / (view.width - 2 * model.current_root.radius));
-            let c2 = y_scale(model.current_root.body.position[1] / view.height);
-            model.current_root.color = chroma.mix(c1, c2).num();
+            this.setColor(model.current_root);
 
             this.parentBubble.alpha = 0.8;
             this.parentBubble.beginFill(model.current_root.color);
@@ -137,10 +135,7 @@ export class View{
         }
         if(model.current_root.children != undefined){
             for (let bubble of model.current_root.children) {
-                // set color
-                let c1 = x_scale(bubble.body.position[0] / (view.width - 2 * bubble.radius));
-                let c2 = y_scale(bubble.body.position[1] / view.height);
-                bubble.color = chroma.mix(c1, c2).num();
+                this.setColor(bubble);
 
                 this.bubbles.beginFill(bubble.color);
                 this.bubbles.lineStyle({width: 2});
@@ -149,12 +144,9 @@ export class View{
 
                 if(bubble.children != undefined){
                     for (let child of bubble.children) {
-                        // set color
-                        let c1 = x_scale(child.body.position[0] / (view.width - 2 * bubble.radius));
-                        let c2 = y_scale(child.body.position[1] / view.height);
-                        bubble.color = chroma.mix(c1, c2).num();
+                        this.setColor(child);
 
-                        this.bubbles.beginFill(bubble.color);
+                        this.bubbles.beginFill(child.color);
                         this.bubbles.lineStyle({width: 2});
                         this.bubbles.drawCircle(child.body.position[0], child.body.position[1], child.radius);
                         this.bubbles.endFill();
@@ -162,6 +154,37 @@ export class View{
                 }
             }
         }
+    }
+
+    setColor(node: Bubble)
+    {
+        let color: chroma.Color;
+        switch(this.color_selector)
+        {
+            case 0:
+                let x_scale = Bubble.x_scale;
+                let y_scale = chroma.scale(['#000000', '#ffffff']);
+                let c1 = x_scale(node.body.position[0] / (view.width - 2 * node.radius));
+                let c2 = y_scale(node.body.position[1] / view.height);
+                node.color = chroma.mix(c1, c2).num();
+                break;
+            case 1:
+                console.log("value: ", (node.data[0] - model.minProp1) / model.maxProp1);
+                console.log(node.data[0])
+                color = Bubble.x_scale((node.data[0] - model.minProp1) / model.maxProp1);
+                node.color = color.num();
+                break;
+            case 2:
+                color = Bubble.x_scale((node.data[1] - model.minProp2) / model.maxProp2);
+                node.color = color.num();
+                break;
+            case 3:
+                color = Bubble.x_scale((node.data[2] - model.minProp3) / model.maxProp3);
+                node.color = color.num();
+                break;
+        }
+
+        
     }
 
     // only here for debug purposes
