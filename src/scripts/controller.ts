@@ -118,6 +118,7 @@ export class Controller{
     }
 
     setAttractionScheme(index: number){
+        model.world.gravity = [0, 0];
         for(let spring of model.world.springs){
             model.world.removeSpring(spring);
         }
@@ -128,20 +129,17 @@ export class Controller{
     }
 
     setGravityScheme(index: number){
-        switch(index){
-            //standard
-            case 0:
-                break;
-            //
-            case 1:
-                break;
-            // 
-            case 2:
-                break;
-            //
-            case 3:
-                break;
+        this.setPropertyValues(model.root_bubble);
+        model.data_index = index - 1;
+        if(index == 0){
+            model.world.gravity = [0, 0];
+            return;
         }
-        model.world.gravity = [0, 30];
+        else{
+            model.world.gravity = [0, 100];
+        }
+        model.setGravity(model.current_root);
     }
+
+
 }

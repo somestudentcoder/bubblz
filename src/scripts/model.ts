@@ -24,6 +24,7 @@ export class Model{
     public world: p2.World = {} as p2.World;
     public current_root: Bubble = {} as Bubble;
     public attraction_clusters: number = 0;
+    public data_index: number = 0;
 
     public minProp1: number = Infinity;
     public maxProp1: number = 0;
@@ -142,7 +143,7 @@ export class Model{
                         console.log(bubble_a.name + " | " + bubble_b.name);
                         console.log("repulsion: " + group_id_a + " | " + group_id_b);
                         let spring = new p2.LinearSpring(bubble_a.body, bubble_b.body, {
-                            stiffness: 2,
+                            stiffness: 1,
                             restLength: (bubble_a.radius + bubble_b.radius) * 4,
                             damping: 1,
                         });
@@ -152,6 +153,31 @@ export class Model{
                 }
             }
         }
+    }
+
+
+    setGravity(new_root: Bubble){
+        let data_index = this.data_index;
+        for(let bubble of new_root.children){
+            if(bubble.data[data_index] < new_root.data[data_index]){
+                console.log("positive: " + bubble.name);
+                bubble.body.gravityScale = 1;
+            }
+            else{
+                console.log("negative: " + bubble.name);
+                bubble.body.gravityScale = -1;
+            }
+            bubble.body.gravityScale = bubble.data[data_index] < new_root.data[data_index] ? 1 : -1;
+            for(let child of bubble.children){
+                if(child.data[data_index] < bubble.data[data_index]){
+                    child.body.gravityScale = 1;
+                }
+                else{
+                    child.body.gravityScale = -1;
+                }
+            }
+        }
+
     }
 
 
@@ -229,11 +255,15 @@ export class Model{
                 }
                 this.world.addBody(child.body);
             }
-            //this.setSprings(bubble);
+            if(this.attraction_clusters > 0){
+                this.setSprings(bubble);
+            }
+            
         }
         if(this.attraction_clusters > 0){
             this.setSprings(new_root);
         }
+        this.setGravity(new_root);
         console.log("old root");
         console.log(this.current_root);
         console.log("new root");
