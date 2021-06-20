@@ -111,11 +111,17 @@ export class Controller{
         model.attraction_clusters = index;
         if(index > 0){
             model.setSprings(model.current_root);
+            for(let bubble of model.current_root.children){
+                model.setSprings(bubble);
+            }
         }
     }
 
     setGravityScheme(index: number){
         this.setPropertyValues(model.root_bubble);
+        for(let spring of model.world.springs){
+            model.world.removeSpring(spring);
+        }
         model.data_index = index - 1;
         if(index == 0){
             model.world.gravity = [0, 0];

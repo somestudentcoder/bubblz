@@ -130,8 +130,8 @@ export class Model{
 
                 if(bubble_a != bubble_b){
                     if(group_id_a == group_id_b){
-                        console.log(bubble_a.name + " | " + bubble_b.name);
-                        console.log("group_ids: " + group_id_a + " | " + group_id_b);
+                        //console.log(bubble_a.name + " | " + bubble_b.name);
+                        //console.log("group_ids: " + group_id_a + " | " + group_id_b);
                         let spring = new p2.LinearSpring(bubble_a.body, bubble_b.body, {
                             stiffness: (bubble_a.radius + bubble_b.radius) / 50,
                             restLength: (bubble_a.radius + bubble_b.radius),
@@ -140,8 +140,8 @@ export class Model{
                         this.world.addSpring(spring);
                     }
                     else{
-                        console.log(bubble_a.name + " | " + bubble_b.name);
-                        console.log("repulsion: " + group_id_a + " | " + group_id_b);
+                        //console.log(bubble_a.name + " | " + bubble_b.name);
+                        //console.log("repulsion: " + group_id_a + " | " + group_id_b);
                         let spring = new p2.LinearSpring(bubble_a.body, bubble_b.body, {
                             stiffness: 1,
                             restLength: (bubble_a.radius + bubble_b.radius) * 4,
@@ -160,11 +160,9 @@ export class Model{
         let data_index = this.data_index;
         for(let bubble of new_root.children){
             if(bubble.data[data_index] < new_root.data[data_index]){
-                console.log("positive: " + bubble.name);
                 bubble.body.gravityScale = 1;
             }
             else{
-                console.log("negative: " + bubble.name);
                 bubble.body.gravityScale = -1;
             }
             bubble.body.gravityScale = bubble.data[data_index] < new_root.data[data_index] ? 1 : -1;
