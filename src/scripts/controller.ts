@@ -81,6 +81,9 @@ export class Controller{
                     this.setPropertyValues(child);
                 }
                 sum = math.add(sum, child.data) as number[];
+                model.setMinMax(1, child.data[0]);
+                model.setMinMax(2, child.data[1]);
+                model.setMinMax(3, child.data[2]);
             });
             node.data = math.divide(sum, node.children.length) as number[];
         }
@@ -96,25 +99,8 @@ export class Controller{
 
     setColorScheme(index: number){
         this.setPropertyValues(model.root_bubble);
-
-        switch(index){
-            //standard
-            case 0:
-                view.color_selector = 0;
-                break;
-            //prop 1
-            case 1:
-                view.color_selector = 1;
-                break;
-            //prop 2
-            case 2:
-                view.color_selector = 2;
-                break;
-            //prop 3
-            case 3:
-                view.color_selector = 3;
-                break;
-        }
+        
+        view.color_selector = index;
     }
 
     setAttractionScheme(index: number){

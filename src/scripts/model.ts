@@ -27,11 +27,11 @@ export class Model{
     public data_index: number = 0;
 
     public minProp1: number = Infinity;
-    public maxProp1: number = 0;
+    public maxProp1: number = -Infinity;
     public minProp2: number = Infinity;
-    public maxProp2: number = 0;
+    public maxProp2: number = -Infinity;
     public minProp3: number = Infinity;
-    public maxProp3: number = 0;
+    public maxProp3: number = -Infinity;
 
     constructor(node?: HierarchyNode<any>){
         this.world = new p2.World({
@@ -411,7 +411,7 @@ export class Model{
                     {
                         for (let element of root_elements)
                         {
-                            new_node[element.name_] = element.getNumber();
+                            new_node[element.name_] = math.randomInt(element.min_, element.max_);
                         }
                         new_node.weight = 1;
                         //console.log(current_node)
@@ -466,5 +466,16 @@ export class Model{
                 }
                 break;
         }
+    }
+
+    resetMinMax()
+    {
+        this.minProp1 = Infinity;
+        this.minProp2 = Infinity;
+        this.minProp3 = Infinity;
+
+        this.maxProp1 = -Infinity;
+        this.maxProp2 = -Infinity;
+        this.maxProp3 = -Infinity;
     }
 }
