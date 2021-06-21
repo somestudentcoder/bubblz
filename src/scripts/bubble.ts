@@ -20,6 +20,7 @@ export class Bubble{
     public depth: number = 0;
     public height: number = 0;
     public data: number[] = [0, 0, 0];
+    static data_type: string[] = ["","",""];
     static x_scale:chroma.Scale = chroma.scale(['#ff0000', '#ff2100', '#ff3200', '#ff4000', '#ff4b00', 
     '#ff5600', '#ff6000', '#ff6900', '#ff7300', '#ff7c00', '#ff8500', '#ff8e00', '#ff9700', 
     '#ffa100', '#ffaa00', '#ffb300', '#ffbd00', '#ffc700', '#ffd000', '#ffda00', '#ffe500', 
@@ -36,15 +37,24 @@ export class Bubble{
     static from(node: HierarchyNode<any>, parent_param?: Bubble){
         let bubble = new Bubble();
 
-        if(+node.data.displacement)
+        if(node.data.displacement != undefined)
         {
+            if(Bubble.data_type[0] != "Displacement in l")
+            {
+                Bubble.data_type[0] = "Displacement in l"
+                Bubble.data_type[1] = "Horsepower"
+                Bubble.data_type[2] = "Weight in kg"
+            }
             bubble.data = [+node.data.displacement, +node.data.horsepower, +node.data.kerb_weight]
-            model.setMinMax(1, +node.data.displacement);
-            model.setMinMax(2, +node.data.horsepower);
-            model.setMinMax(3, +node.data.kerb_weight);
         }
-        else if(+node.data.prop1)
+        else if(node.data.prop1 != undefined)
         {
+            if(Bubble.data_type[0] != "Property 1")
+            {
+                Bubble.data_type[0] = "Property 1"
+                Bubble.data_type[1] = "Property 2"
+                Bubble.data_type[2] = "Property 3"
+            }
             bubble.data = [+node.data.prop1, +node.data.prop2, +node.data.prop3];
         }
         else

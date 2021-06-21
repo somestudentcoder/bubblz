@@ -64,6 +64,7 @@ export class Model{
             this.calculateWeight(node);
             this.root_bubble = this.createRootBubble(node);
             this.setNewRoot(this.root_bubble);
+            controller.setColorScheme(0);
             console.log(node);
             console.log(this.root_bubble);
         }
@@ -466,14 +467,14 @@ export class Model{
         }
     }
 
-    resetMinMax()
-    {
-        this.minProp1 = Infinity;
-        this.minProp2 = Infinity;
-        this.minProp3 = Infinity;
+    // resetMinMax()
+    // {
+    //     this.minProp1 = Infinity;
+    //     this.minProp2 = Infinity;
+    //     this.minProp3 = Infinity;
 
-        this.maxProp1 = -Infinity;
-        this.maxProp2 = -Infinity;
-        this.maxProp3 = -Infinity;
-    }
+    //     this.maxProp1 = -Infinity;
+    //     this.maxProp2 = -Infinity;
+    //     this.maxProp3 = -Infinity;
+    // }
 }

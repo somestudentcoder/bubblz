@@ -80,27 +80,31 @@ export class Controller{
                 {
                     this.setPropertyValues(child);
                 }
+                else
+                {
+                    model.setMinMax(1, child.data[0]);
+                    model.setMinMax(2, child.data[1]);
+                    model.setMinMax(3, child.data[2]);
+                }
                 sum = math.add(sum, child.data) as number[];
-                model.setMinMax(1, child.data[0]);
-                model.setMinMax(2, child.data[1]);
-                model.setMinMax(3, child.data[2]);
             });
             node.data = math.divide(sum, node.children.length) as number[];
         }
+        else
+        {
+            model.setMinMax(1, node.data[0]);
+            model.setMinMax(2, node.data[1]);
+            model.setMinMax(3, node.data[2]);
+        }
     }
 
-    // calcSimilarity(node1: Bubble, node2: Bubble, properties: number){
-    //     let prop_1 = this.getSumLeaf(node1)
-    //     let prop_2 = this.getSumLeaf(node2) //node2.properties
-    //     let cosing_sim = math.dot(prop_1, prop_2) / ((math.norm(prop_1) as number) * (math.norm(prop_2) as number))
-    //     console.log(cosing_sim)
-    //     return cosing_sim
-    // }
-
     setColorScheme(index: number){
+
         this.setPropertyValues(model.root_bubble);
-        
+
         view.color_selector = index;
+
+        view.showLegend(index);
     }
 
     setAttractionScheme(index: number){

@@ -5,6 +5,8 @@ import { Bubble } from "./bubble";
 import {RootElement} from "./rootElement";
 import {HierarchyNode} from "d3-hierarchy";
 import * as chroma from 'chroma-js';
+import { hex } from 'chroma-js';
+import { string } from 'mathjs';
 
 const MAXRADIUS: number = 800;
 
@@ -315,5 +317,52 @@ export class View{
         document.getElementById('popup-close-button')!.onclick = () => {
             document.getElementById('pop-up')!.style.display = "none";
         };
+    }
+
+    showLegend(type: number)
+    {
+        if(type == 0)
+        {
+            document.getElementById('legend')!.style.display = "none";
+            document.getElementById('type')!.style.display = "none";
+        }
+        else
+        {
+            document.getElementById('legend')!.style.display = "block";
+            document.getElementById('type')!.style.display = "block";
+
+            switch(type)
+            {
+                case 1:
+                    document.getElementById('min')!.innerHTML = "Min: " + model.minProp1;
+                	document.getElementById('max')!.innerHTML = "Max: " + model.maxProp1;
+                    break;
+                case 2:
+                    document.getElementById('min')!.innerHTML = "Min: " + model.minProp2;
+                    document.getElementById('max')!.innerHTML = "Max: " + model.maxProp2;
+                    break;
+                case 3:
+                    document.getElementById('min')!.innerHTML = "Min: " + model.minProp3;
+                    document.getElementById('max')!.innerHTML = "Max: " + model.maxProp3;
+                    break;
+            }
+            
+            document.getElementById('type')!.innerHTML = Bubble.data_type[type-1];
+
+            let c = document.getElementById("spectrum_canvas") as HTMLCanvasElement;
+            let ctx = c.getContext("2d") as CanvasRenderingContext2D;
+
+            let grd = ctx.createLinearGradient(0,0,25,700);
+            
+            let colors = Bubble.x_scale.colors(46, "hex")
+            colors.forEach((color, index) => {
+                grd.addColorStop((index + 1) / colors.length, color)
+            });
+
+            ctx.fillStyle = grd;
+            ctx.fillRect(0,0,25,700);
+        }
+
+        
     }
 }

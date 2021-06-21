@@ -17,7 +17,7 @@ h2
 header{
     position: relative
 }
-canvas {
+#main_canvas {
     border-style: solid;
     border-color: #202020;
     display: block;
@@ -25,7 +25,34 @@ canvas {
     max-width: 83%;
     max-height: 83vh;
     resize: both;
-  }
+}
+
+#spectrum_canvas{
+    display: block;
+    margin-left: auto;
+    margin-right: auto
+}
+
+#legend{
+    float:  right;
+    display: none;
+    width: 6%;
+}
+
+#type{
+    display: none;
+    float: right;
+    margin-top: 20%;
+    margin-right: 20px;
+}
+
+.indicators{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
 .button1{
     position: absolute;
     text-align: center;
@@ -199,7 +226,7 @@ canvas {
     margin-top: 0;
     margin-bottom: 0;
   }
-  
+
   /* The container <div> - needed to position the dropdown content */
   .dropdown {
     float: left;
@@ -222,7 +249,7 @@ canvas {
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
   }
-  
+
   /* Links inside the dropdown */
   .dropdown-content a {
     color: black;
@@ -230,10 +257,9 @@ canvas {
     text-decoration: none;
     display: block;
   }
-  
+
   /* Change color of dropdown links on hover */
   .dropdown-content a:hover {background-color: #ddd}
-  
+
   /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
-  .show {display:block;}
   .show {display:block;}
