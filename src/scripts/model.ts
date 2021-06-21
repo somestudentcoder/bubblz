@@ -35,7 +35,7 @@ export class Model{
 
     constructor(node?: HierarchyNode<any>){
         this.world = new p2.World({
-            gravity:[0, 0]
+            gravity: [0, 0]
         });
         this.world.defaultContactMaterial.friction = 0.1;
         this.world.defaultContactMaterial.restitution = 0.7;
@@ -144,7 +144,7 @@ export class Model{
                         //console.log(bubble_a.name + " | " + bubble_b.name);
                         //console.log("repulsion: " + group_id_a + " | " + group_id_b);
                         let spring = new p2.LinearSpring(bubble_a.body, bubble_b.body, {
-                            stiffness: 1,
+                            stiffness: 2,
                             restLength: (bubble_a.radius + bubble_b.radius) * 4,
                             damping: 1,
                         });
@@ -181,13 +181,13 @@ export class Model{
 
 
     setNewRoot(new_root: Bubble){
-        // remove all bodies from world
-        for(let body of model.world.bodies){
-            model.world.removeBody(body);
-        }
-        for(let spring of model.world.springs){
-            model.world.removeSpring(spring);
-        }
+        // remove all bodies from 
+        let grav = this.world.gravity;
+        this.world = new p2.World({
+            gravity: grav
+        });
+        this.world.defaultContactMaterial.friction = 0.1;
+        this.world.defaultContactMaterial.restitution = 0.7;
         // add walls back in
         model.createWalls();
 
